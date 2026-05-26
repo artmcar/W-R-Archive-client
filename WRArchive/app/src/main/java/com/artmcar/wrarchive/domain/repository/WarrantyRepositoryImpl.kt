@@ -21,6 +21,9 @@ class WarrantyRepositoryImpl @Inject constructor(
                 }
         }
     }
+    override suspend fun getWarrantyById(id: Int): WarrantyModel? {
+        return dao.getById(id)?.toDomain()
+    }
     override suspend fun insertWarranty(item: WarrantyModel) {
         dao.insert(item.toEntity())
     }

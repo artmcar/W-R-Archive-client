@@ -1,4 +1,4 @@
-package com.artmcar.wrarchive.presentation.warranty.usecase
+package com.artmcar.wrarchive.domain.usecase.warranty_uc
 
 import com.artmcar.wrarchive.domain.repository.WarrantyRepository
 import javax.inject.Inject

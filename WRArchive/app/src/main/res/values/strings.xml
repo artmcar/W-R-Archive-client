@@ -8,6 +8,9 @@
     <string name="receipt_label">Receipt</string>
     <string name="expires">Expires</string>
     <string name="add_warranty">Add Warranty</string>
+    <string name="edit_warranty">Edit Warranty</string>
+    <string name="add_receipt">Add Receipt</string>
+    <string name="edit_receipt">Edit Receipt</string>
     <string name="title">Title</string>
     <string name="warranty_add_agree">Add</string>
     <string name="warranty_add_cancel">Cancel</string>
@@ -25,6 +28,7 @@
     <string name="purchase">Purchase</string>
     <string name="no_receipts_yet">No receipts yet</string>
     <string name="expiration_date_label">Expiration Date</string>
+    <string name="purchase_date_label">Purchase Date</string>
     <string name="dd_mm_yyyy">dd.MM.yyyy</string>
 
 </resources>

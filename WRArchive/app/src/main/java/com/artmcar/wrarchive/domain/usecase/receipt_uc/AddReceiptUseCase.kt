@@ -1,4 +1,4 @@
-package com.artmcar.wrarchive.presentation.receipt.usecase
+package com.artmcar.wrarchive.domain.usecase.receipt_uc
 
 import com.artmcar.wrarchive.domain.model.ReceiptModel
 import com.artmcar.wrarchive.domain.repository.ReceiptRepository

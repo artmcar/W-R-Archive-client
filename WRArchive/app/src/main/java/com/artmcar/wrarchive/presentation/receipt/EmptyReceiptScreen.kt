@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.artmcar.wrarchive.R
 
 @Composable
@@ -25,9 +26,8 @@ fun EmptyReceiptScreen() {
             contentDescription = null
         )
         Text(
-            text = R.string.no_receipts_yet.toString(),
-            style =
-                MaterialTheme.typography.titleMedium
+            text = stringResource(R.string.no_receipts_yet),
+            style = MaterialTheme.typography.titleMedium
         )
     }
 }

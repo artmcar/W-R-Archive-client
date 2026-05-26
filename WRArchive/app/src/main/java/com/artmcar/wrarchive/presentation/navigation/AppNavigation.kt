@@ -13,21 +13,28 @@ import com.artmcar.wrarchive.presentation.profile.ProfileScreen
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = AuthGraph) {
+    NavHost(
+        navController = navController,
+        startDestination = AuthGraph
+    ) {
         navigation<AuthGraph>(
             startDestination = LoginRoute
-        ){
+        ) {
             composable<LoginRoute> {
                 LoginScreen(
                     onLoginClick = {
-                        navController.navigate(MainGraph){
-                            popUpTo(AuthGraph){
+                        navController.navigate(
+                            MainRoute
+                        ) {
+                            popUpTo(AuthGraph) {
                                 inclusive = true
                             }
                         }
                     },
                     onRegisterClick = {
-                        navController.navigate(RegisterRoute)
+                        navController.navigate(
+                            RegisterRoute
+                        )
                     }
                 )
             }
@@ -37,8 +44,10 @@ fun AppNavigation() {
                         navController.popBackStack()
                     },
                     onRegisterClick = {
-                        navController.navigate(MainGraph){
-                            popUpTo(AuthGraph){
+                        navController.navigate(
+                            MainRoute
+                        ) {
+                            popUpTo(AuthGraph) {
                                 inclusive = true
                             }
                         }
@@ -46,28 +55,28 @@ fun AppNavigation() {
                 )
             }
         }
-        navigation<MainGraph>(
-            startDestination = WarrantyRoute
-        ){
-            composable<WarrantyRoute> {
-                MainScreen(
-                    rootNavController = navController
-                )
-            }
-            composable<ProfileRoute> {
-                ProfileScreen(
-                    onLogout = {
-                        navController.navigate(AuthGraph){
-                            popUpTo(MainGraph){
-                                inclusive = true
-                            }
-                        }
-                    },
-                    onBack = {
-                        navController.popBackStack()
+        composable<MainRoute> {
+            MainScreen(
+                onProfileClick = {
+                    navController.navigate(
+                        ProfileRoute
+                    )
+                }
+            )
+        }
+        composable<ProfileRoute> {
+            ProfileScreen(
+                onLogout = {
+                    navController.navigate(
+                        AuthGraph
+                    ) {
+                        popUpTo(0)
                     }
-                )
-            }
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

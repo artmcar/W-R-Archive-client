@@ -21,7 +21,7 @@ object ProfileRoute
 object AuthGraph
 
 @Serializable
-object MainGraph
+object MainRoute
 
 @Serializable
 data class AddEditWarrantyRoute(

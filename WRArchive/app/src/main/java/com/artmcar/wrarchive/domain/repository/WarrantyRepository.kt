@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface WarrantyRepository {
     fun getAllWarranties(): Flow<List<WarrantyModel>>
+    suspend fun getWarrantyById(id: Int): WarrantyModel?
     suspend fun insertWarranty(item: WarrantyModel)
     suspend fun updateWarranty(item: WarrantyModel)
     suspend fun deleteWarranty(item: WarrantyModel)

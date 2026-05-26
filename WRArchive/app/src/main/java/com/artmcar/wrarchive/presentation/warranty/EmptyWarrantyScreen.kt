@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.artmcar.wrarchive.R
 
 @Composable
@@ -25,7 +26,7 @@ fun EmptyWarrantyScreen() {
             contentDescription = null
         )
         Text(
-            text = R.string.no_warranties_yet.toString(),
+            text = stringResource(R.string.no_warranties_yet),
             style = MaterialTheme.typography.titleMedium
         )
     }

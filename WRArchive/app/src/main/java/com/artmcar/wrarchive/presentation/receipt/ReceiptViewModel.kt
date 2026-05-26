@@ -3,8 +3,8 @@ package com.artmcar.wrarchive.presentation.receipt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.domain.model.ReceiptModel
-import com.artmcar.wrarchive.presentation.receipt.usecase.DeleteReceiptUseCase
-import com.artmcar.wrarchive.presentation.receipt.usecase.GetAllReceiptsUseCase
+import com.artmcar.wrarchive.domain.usecase.receipt_uc.DeleteReceiptUseCase
+import com.artmcar.wrarchive.domain.usecase.receipt_uc.GetAllReceiptsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

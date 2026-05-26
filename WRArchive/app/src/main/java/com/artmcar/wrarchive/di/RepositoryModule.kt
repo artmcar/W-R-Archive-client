@@ -1,5 +1,7 @@
 package com.artmcar.wrarchive.di
 
+import com.artmcar.wrarchive.domain.repository.ReceiptRepository
+import com.artmcar.wrarchive.domain.repository.ReceiptRepositoryImpl
 import com.artmcar.wrarchive.domain.repository.WarrantyRepository
 import com.artmcar.wrarchive.domain.repository.WarrantyRepositoryImpl
 import dagger.Binds
@@ -14,7 +16,9 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindWarrantyRepository(
-        impl: WarrantyRepositoryImpl
-    ): WarrantyRepository
+    abstract fun bindWarrantyRepository(impl: WarrantyRepositoryImpl): WarrantyRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindReceiptRepository(impl: ReceiptRepositoryImpl): ReceiptRepository
 }

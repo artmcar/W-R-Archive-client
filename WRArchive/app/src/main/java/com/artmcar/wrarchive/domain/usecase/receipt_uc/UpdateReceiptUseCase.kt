@@ -1,15 +1,14 @@
-package com.artmcar.wrarchive.presentation.receipt.usecase
+package com.artmcar.wrarchive.domain.usecase.receipt_uc
 
 import com.artmcar.wrarchive.domain.model.ReceiptModel
 import com.artmcar.wrarchive.domain.repository.ReceiptRepository
 import javax.inject.Inject
 
-class DeleteReceiptUseCase @Inject constructor(
+class UpdateReceiptUseCase @Inject constructor(
     private val repository: ReceiptRepository
 ) {
-    suspend operator fun invoke(
-        item: ReceiptModel
+    suspend operator fun invoke(item: ReceiptModel
     ) {
-        repository.deleteReceipt(item)
+        repository.updateReceipt(item)
     }
 }

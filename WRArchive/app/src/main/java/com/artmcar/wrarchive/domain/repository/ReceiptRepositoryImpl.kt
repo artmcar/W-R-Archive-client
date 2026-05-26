@@ -20,6 +20,9 @@ class ReceiptRepositoryImpl @Inject constructor(
                 }
         }
     }
+    override suspend fun getReceiptById(id: Int): ReceiptModel? {
+        return dao.getById(id)?.toDomain()
+    }
     override suspend fun insertReceipt(
         item: ReceiptModel
     ) { dao.insert(item.toEntity())

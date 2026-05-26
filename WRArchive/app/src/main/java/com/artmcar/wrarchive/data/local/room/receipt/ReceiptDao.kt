@@ -16,4 +16,7 @@ interface ReceiptDao {
 
     @Query("SELECT * FROM receipts")
     fun getAll(): Flow<List<ReceiptFields>>
+
+    @Query("SELECT * FROM receipts WHERE localId = :id")
+    suspend fun getById(id: Int): ReceiptFields?
 }

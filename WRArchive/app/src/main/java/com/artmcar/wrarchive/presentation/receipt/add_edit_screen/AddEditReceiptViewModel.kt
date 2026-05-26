@@ -1,4 +1,4 @@
-package com.artmcar.wrarchive.presentation.warranty.add_edit_screen
+package com.artmcar.wrarchive.presentation.receipt.add_edit_screen
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.artmcar.wrarchive.data.local.room.SyncStatus
-import com.artmcar.wrarchive.domain.model.WarrantyModel
-import com.artmcar.wrarchive.domain.usecase.warranty_uc.AddWarrantyUseCase
-import com.artmcar.wrarchive.domain.usecase.warranty_uc.GetWarrantyByIdUseCase
-import com.artmcar.wrarchive.domain.usecase.warranty_uc.UpdateWarrantyUseCase
-import com.artmcar.wrarchive.presentation.navigation.AddEditWarrantyRoute
+import com.artmcar.wrarchive.domain.model.ReceiptModel
+import com.artmcar.wrarchive.domain.usecase.receipt_uc.AddReceiptUseCase
+import com.artmcar.wrarchive.domain.usecase.receipt_uc.GetReceiptByIdUseCase
+import com.artmcar.wrarchive.domain.usecase.receipt_uc.UpdateReceiptUseCase
+import com.artmcar.wrarchive.presentation.navigation.AddEditReceiptRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,45 +21,42 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.math.exp
 
 @HiltViewModel
-class AddEditWarrantyViewModel @Inject constructor(
+class AddEditReceiptViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val addWarrantyUseCase: AddWarrantyUseCase,
-    private val updateWarrantyUseCase: UpdateWarrantyUseCase,
-    private val getWarrantyByIdUseCase: GetWarrantyByIdUseCase
+    private val addReceiptUseCase: AddReceiptUseCase,
+    private val updateReceiptUseCase: UpdateReceiptUseCase,
+    private val getReceiptByIdUseCase: GetReceiptByIdUseCase
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(AddEditWarrantyUiState())
-    val uiState: StateFlow<AddEditWarrantyUiState> = _uiState.asStateFlow()
-
-    private val route = savedStateHandle.toRoute<AddEditWarrantyRoute>()
-    init{
-        route.warrantyId?.let{
-            loadWarranty(it)
+    private val _uiState = MutableStateFlow(AddEditReceiptUiState())
+    val uiState: StateFlow<AddEditReceiptUiState> = _uiState.asStateFlow()
+    private val route = savedStateHandle.toRoute<AddEditReceiptRoute>()
+    init {
+        route.receiptId?.let {
+            loadReceipt(it)
         }
     }
-    private fun loadWarranty(id: Int) {
+    private fun loadReceipt(id: Int) {
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
                     isLoading = true
                 )
             }
-            val item = getWarrantyByIdUseCase(id)
+            val item = getReceiptByIdUseCase(id)
             item?.let {
-                val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+                val formatter =
+                    SimpleDateFormat(
+                        "dd.MM.yyyy",
+                        Locale.getDefault()
+                    )
                 _uiState.update { state ->
                     state.copy(
                         localId = it.localId,
                         title = it.title,
                         description = it.description,
-                        expirationDate =
-                            formatter.format(
-                                Date(
-                                    it.expirationDate
-                                )
-                            ),
+                        purchaseDate = formatter.format(Date(it.purchaseDate)),
                         imageUri = it.imagePath?.let(Uri::parse),
                         createdAt = it.createdAt,
                         isEditMode = true,
@@ -69,41 +66,39 @@ class AddEditWarrantyViewModel @Inject constructor(
             }
         }
     }
-
     fun updateTitle(value: String) {
         _uiState.update {
-            it.copy(
-                title = value
-            )
+            it.copy(title = value)
         }
     }
     fun updateDescription(value: String) {
         _uiState.update {
-            it.copy(
-                description = value
-            )
+            it.copy(description = value)
+        }
+    }
+    fun updateDate(value: String) {
+        _uiState.update {
+            it.copy(purchaseDate = value)
         }
     }
     fun updateImage(uri: Uri?) {
         _uiState.update {
-            it.copy(
-                imageUri = uri
-            )
+            it.copy(imageUri = uri)
         }
     }
-    fun saveWarranty(
+    fun saveReceipt(
         onSaved: () -> Unit
     ) {
         viewModelScope.launch {
             val currentState = _uiState.value
             val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-            val parsedDate = formatter.parse(currentState.expirationDate)?.time ?: System.currentTimeMillis()
-            val model = WarrantyModel(
+            val parsedDate = formatter.parse(currentState.purchaseDate)?.time ?: System.currentTimeMillis()
+            val model = ReceiptModel(
                 localId = currentState.localId,
                 remoteId = null,
                 title = currentState.title,
                 description = currentState.description,
-                expirationDate = parsedDate,
+                purchaseDate = parsedDate,
                 imagePath = currentState.imageUri?.toString(),
                 createdAt =
                     if(currentState.isEditMode){
@@ -111,29 +106,23 @@ class AddEditWarrantyViewModel @Inject constructor(
                     }
                     else{
                         System.currentTimeMillis()
-                        },
+                    },
                 syncStatus =
-                    if(currentState.isEditMode){
+                    if(currentState.isEditMode) {
                         SyncStatus.UPDATED
                     }
                     else{
                         SyncStatus.CREATED
                     }
             )
-            if(currentState.isEditMode){
-                updateWarrantyUseCase(model)
+            if(currentState.isEditMode) {
+                updateReceiptUseCase(model)
+
             }
-            else{
-                addWarrantyUseCase(model)
+            else {
+                addReceiptUseCase(model)
             }
             onSaved()
-        }
-    }
-    fun updateDate(value: String) {
-        _uiState.update {
-            it.copy(
-                expirationDate = value
-            )
         }
     }
 }

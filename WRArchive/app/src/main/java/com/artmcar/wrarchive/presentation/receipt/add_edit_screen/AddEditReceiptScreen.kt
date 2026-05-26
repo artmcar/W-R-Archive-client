@@ -1,8 +1,6 @@
-package com.artmcar.wrarchive.presentation.warranty.add_edit_screen
+package com.artmcar.wrarchive.presentation.receipt.add_edit_screen
 
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -30,9 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -47,38 +42,37 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditWarrantyScreen(
+fun AddEditReceiptScreen(
     onBackClick: () -> Unit,
-    viewModel: AddEditWarrantyViewModel = hiltViewModel()
+    viewModel: AddEditReceiptViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()
+    )
     val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia()
-    ) { uri ->
-        viewModel.updateImage(uri)
-    }
-    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            contract = ActivityResultContracts.GetContent()
+        ) { uri ->
+            viewModel.updateImage(uri)
+        }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        if(uiState.isEditMode){
-                            stringResource(R.string.edit_warranty)
-                        }
-                        else{
-                            stringResource(R.string.add_warranty)
-                        }
+                        if(uiState.isEditMode)
+                            stringResource(R.string.edit_receipt)
+                        else
+                            stringResource(R.string.add_receipt)
                     )
                 }
             )
         }
     ) { padding ->
-        if(uiState.isLoading){
+        if(uiState.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 CircularProgressIndicator()
             }
             return@Scaffold
@@ -88,8 +82,7 @@ fun AddEditWarrantyScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
-                .verticalScroll(
-                    rememberScrollState()
+                .verticalScroll(rememberScrollState()
                 ),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -101,13 +94,12 @@ fun AddEditWarrantyScreen(
                 label = {
                     Text(stringResource(R.string.title))
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier =
+                    Modifier.fillMaxWidth()
             )
             OutlinedTextField(
                 value = uiState.description,
-                onValueChange = {
-                    viewModel.updateDescription(it)
-                },
+                onValueChange = { viewModel.updateDescription(it) },
                 label = {
                     Text(stringResource(R.string.description))
                 },
@@ -117,16 +109,13 @@ fun AddEditWarrantyScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 OutlinedTextField(
-                    value = uiState.expirationDate,
-                    onValueChange = {
-                        viewModel.updateDate(it)
-                    },
-
+                    value = uiState.purchaseDate,
+                    onValueChange = { viewModel.updateDate(it) },
                     label = {
-                        Text(stringResource(R.string.expiration_date_label))
+                        Text(stringResource(R.string.purchase_date_label))
                     },
-                    modifier = Modifier.weight(1f),
-                    placeholder = { Text(stringResource(R.string.dd_mm_yyyy)) }
+                    placeholder = { Text(stringResource(R.string.dd_mm_yyyy)) },
+                    modifier = Modifier.weight(1f)
                 )
                 FloatingActionButton(
                     onClick = {
@@ -142,31 +131,28 @@ fun AddEditWarrantyScreen(
             }
             Button(
                 onClick = {
-                    imagePicker.launch(
-                        PickVisualMediaRequest(
-                            ActivityResultContracts
-                                .PickVisualMedia
-                                .ImageOnly
-                        )
-                    )
+                    imagePicker.launch("image/*")
                 }
             ) {
                 Text(stringResource(R.string.pick_image))
             }
             uiState.imageUri?.let { uri ->
                 Image(
-                    painter =
-                        rememberAsyncImagePainter(uri),
+                    painter = rememberAsyncImagePainter(uri),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(240.dp)
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(
+                modifier = Modifier.weight(1f)
+            )
             Button(
                 onClick = {
-                    viewModel.saveWarranty { onBackClick() }
+                    viewModel.saveReceipt {
+                        onBackClick()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

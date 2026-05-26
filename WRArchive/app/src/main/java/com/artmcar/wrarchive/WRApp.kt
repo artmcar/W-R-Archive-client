@@ -1,4 +1,4 @@
-package com.artmcar.wrarchive.di
+package com.artmcar.wrarchive
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

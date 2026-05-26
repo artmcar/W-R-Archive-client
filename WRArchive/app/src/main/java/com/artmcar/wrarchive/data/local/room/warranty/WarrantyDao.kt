@@ -20,6 +20,9 @@ interface WarrantyDao {
     @Query("SELECT * FROM warranties ORDER BY expirationDate ASC")
     fun getAll(): Flow<List<WarrantyFields>>
 
+    @Query("SELECT * FROM warranties WHERE localId = :id")
+    suspend fun getById(id: Int):WarrantyFields?
+
     @Query("SELECT * FROM warranties WHERE syncStatus != 'SYNCED'")
     suspend fun getPendingSyncItems(): List<WarrantyFields>
 }
