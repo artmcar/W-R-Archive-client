@@ -76,6 +76,7 @@ dependencies {
 
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.android.compiler)
 
@@ -85,5 +86,5 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     implementation(libs.kotlinx.serialization.json)
-
+    implementation(libs.coil.compose)
 }

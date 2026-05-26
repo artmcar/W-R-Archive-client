@@ -7,6 +7,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.artmcar.wrarchive.presentation.auth.LoginScreen
 import com.artmcar.wrarchive.presentation.auth.RegisterScreen
+import com.artmcar.wrarchive.presentation.main.MainScreen
 
 @Composable
 fun AppNavigation() {

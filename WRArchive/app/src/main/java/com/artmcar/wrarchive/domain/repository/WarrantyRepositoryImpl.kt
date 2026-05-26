@@ -14,28 +14,23 @@ class WarrantyRepositoryImpl @Inject constructor(
 ) : WarrantyRepository {
 
     override fun getAllWarranties(): Flow<List<WarrantyModel>> {
-
         return dao.getAll().map { list ->
-            list.map {
-                it.toDomain()
-            }
+            list.filter { it.syncStatus != SyncStatus.DELETED }
+                .map {
+                    it.toDomain()
+                }
         }
     }
-
     override suspend fun insertWarranty(item: WarrantyModel) {
-
         dao.insert(item.toEntity())
     }
-
     override suspend fun updateWarranty(item: WarrantyModel) {
-
         dao.update(
             item.copy(
                 syncStatus = SyncStatus.UPDATED
             ).toEntity()
         )
     }
-
     override suspend fun deleteWarranty(item: WarrantyModel) {
         dao.update(
             item.copy(

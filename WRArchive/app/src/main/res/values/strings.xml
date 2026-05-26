@@ -6,4 +6,14 @@
     <string name="register_button">Register</string>
     <string name="warranty_label">Warranty</string>
     <string name="receipt_label">Receipt</string>
+    <string name="expires">Expires</string>
+    <string name="add_warranty">Add Warranty</string>
+    <string name="title">Title</string>
+    <string name="warranty_add_agree">Add</string>
+    <string name="warranty_add_cancel">Cancel</string>
+    <string name="no_warranties_yet">No warranties yet</string>
+    <string name="description">Description</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="save">Save</string>
+
 </resources>

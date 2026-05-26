@@ -9,9 +9,6 @@ object LoginRoute
 object RegisterRoute
 
 @Serializable
-object MainRoute
-
-@Serializable
 object WarrantyRoute
 
 @Serializable
@@ -25,3 +22,8 @@ object AuthGraph
 
 @Serializable
 object MainGraph
+
+@Serializable
+data class AddEditWarrantyRoute(
+    val warrantyId: Int? = null
+)
