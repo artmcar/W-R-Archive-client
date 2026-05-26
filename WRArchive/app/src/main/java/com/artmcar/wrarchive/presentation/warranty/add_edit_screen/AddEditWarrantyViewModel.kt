@@ -5,13 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.WarrantyModel
-import com.artmcar.wrarchive.presentation.warranty.AddWarrantyUseCase
+import com.artmcar.wrarchive.presentation.warranty.usecase.AddWarrantyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +22,7 @@ class AddEditWarrantyViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AddEditWarrantyUiState())
     val uiState: StateFlow<AddEditWarrantyUiState> = _uiState.asStateFlow()
+
     fun updateTitle(value: String) {
         _uiState.update {
             it.copy(
@@ -41,24 +44,34 @@ class AddEditWarrantyViewModel @Inject constructor(
             )
         }
     }
+
     fun saveWarranty(
         onSaved: () -> Unit
     ) {
         viewModelScope.launch {
             val currentState = _uiState.value
+            val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val parsedDate = formatter.parse(currentState.expirationDate)?.time ?: System.currentTimeMillis()
             addWarrantyUseCase(
                 WarrantyModel(
                     localId = 0,
                     remoteId = null,
                     title = currentState.title,
                     description = currentState.description,
-                    expirationDate = currentState.expirationDate,
+                    expirationDate = parsedDate,
                     imagePath = currentState.imageUri?.toString(),
                     createdAt = System.currentTimeMillis(),
                     syncStatus = SyncStatus.CREATED
                 )
             )
             onSaved()
+        }
+    }
+    fun updateDate(value: String) {
+        _uiState.update {
+            it.copy(
+                expirationDate = value
+            )
         }
     }
 }

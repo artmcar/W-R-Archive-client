@@ -1,15 +1,15 @@
-package com.artmcar.wrarchive.presentation.warranty
+package com.artmcar.wrarchive.presentation.warranty.usecase
 
 import com.artmcar.wrarchive.domain.model.WarrantyModel
 import com.artmcar.wrarchive.domain.repository.WarrantyRepository
 import javax.inject.Inject
 
-class AddWarrantyUseCase @Inject constructor(
+class DeleteWarrantyUseCase @Inject constructor(
     private val repository: WarrantyRepository
 ) {
     suspend operator fun invoke(
         item: WarrantyModel
     ) {
-        repository.insertWarranty(item)
+        repository.deleteWarranty(item)
     }
 }

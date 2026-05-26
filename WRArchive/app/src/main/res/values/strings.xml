@@ -15,5 +15,16 @@
     <string name="description">Description</string>
     <string name="pick_image">Pick Image</string>
     <string name="save">Save</string>
+    <string name="profile">Profile</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="cloud_sync">Cloud Sync</string>
+    <string name="remember_login">Remember Login</string>
+    <string name="logout">Logout</string>
+    <string name="receipts">Receipts</string>
+    <string name="warranties">Warranties</string>
+    <string name="purchase">Purchase</string>
+    <string name="no_receipts_yet">No receipts yet</string>
+    <string name="expiration_date_label">Expiration Date</string>
+    <string name="dd_mm_yyyy">dd.MM.yyyy</string>
 
 </resources>

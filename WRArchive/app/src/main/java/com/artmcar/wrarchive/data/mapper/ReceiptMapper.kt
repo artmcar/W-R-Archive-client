@@ -1,28 +1,28 @@
 package com.artmcar.wrarchive.data.mapper
 
-import com.artmcar.wrarchive.data.local.room.warranty.WarrantyFields
-import com.artmcar.wrarchive.domain.model.WarrantyModel
+import com.artmcar.wrarchive.data.local.room.receipt.ReceiptFields
+import com.artmcar.wrarchive.domain.model.ReceiptModel
 
-fun WarrantyFields.toDomain(): WarrantyModel {
-    return WarrantyModel(
+fun ReceiptFields.toDomain(): ReceiptModel {
+    return ReceiptModel(
         localId = localId,
         remoteId = remoteId,
         title = title,
         description = description,
-        expirationDate = expirationDate,
+        purchaseDate = purchaseDate,
         imagePath = imagePath,
         createdAt = createdAt,
         syncStatus = syncStatus
     )
 }
 
-fun WarrantyModel.toEntity(): WarrantyFields {
-    return WarrantyFields(
+fun ReceiptModel.toEntity(): ReceiptFields {
+    return ReceiptFields(
         localId = localId,
         remoteId = remoteId,
         title = title,
         description = description,
-        expirationDate = expirationDate,
+        purchaseDate = purchaseDate,
         imagePath = imagePath,
         createdAt = createdAt,
         syncStatus = syncStatus

@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.WarrantyModel
+import com.artmcar.wrarchive.presentation.warranty.usecase.AddWarrantyUseCase
+import com.artmcar.wrarchive.presentation.warranty.usecase.DeleteWarrantyUseCase
+import com.artmcar.wrarchive.presentation.warranty.usecase.GetAllWarrantiesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

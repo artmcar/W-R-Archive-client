@@ -1,7 +1,7 @@
-package com.artmcar.wrarchive.presentation.warranty
+package com.artmcar.wrarchive.presentation.receipt
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,31 +14,31 @@ import com.artmcar.wrarchive.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WarrantyTopBar(
+fun ReceiptTopBar(
     onProfileClick: () -> Unit,
     onSortClick: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
-            Text(stringResource(R.string.warranties))
+            Text(stringResource(R.string.receipts))
         },
         actions = {
             IconButton(
-                onClick = onProfileClick
+                onClick = onSortClick
             ) {
                 Icon(
-                    //Todo подобрать иконку для сортировки
-                    imageVector = Icons.Default.KeyboardArrowDown,
+                    //TODO подобрать иконку для сортировки
+                    imageVector = Icons.Default.ArrowDropDown,
                     contentDescription = null
                 )
             }
             IconButton(
                 onClick = onProfileClick
             ) {
-               Icon(
-                   imageVector = Icons.Default.Person,
-                   contentDescription = null
-               )
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null
+                )
             }
         }
     )

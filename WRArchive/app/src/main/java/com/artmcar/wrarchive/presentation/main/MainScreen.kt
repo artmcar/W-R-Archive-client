@@ -8,11 +8,14 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.artmcar.wrarchive.presentation.navigation.AddEditReceiptRoute
 import com.artmcar.wrarchive.presentation.navigation.AddEditWarrantyRoute
 import com.artmcar.wrarchive.presentation.navigation.ProfileRoute
 import com.artmcar.wrarchive.presentation.navigation.ReceiptRoute
 import com.artmcar.wrarchive.presentation.navigation.WarrantyRoute
+import com.artmcar.wrarchive.presentation.receipt.ReceiptScreen
 import com.artmcar.wrarchive.presentation.warranty.WarrantyScreen
+import com.artmcar.wrarchive.presentation.warranty.add_edit_screen.AddEditWarrantyScreen
 
 @Composable
 fun MainScreen (
@@ -47,11 +50,17 @@ fun MainScreen (
                 ReceiptScreen(
                     onProfileClick = {
                         rootNavController.navigate(ProfileRoute)
+                    },
+                    onAddClick = {
+                        navController.navigate(AddEditReceiptRoute())
+                    },
+                    onEditClick = {
+                        navController.navigate(AddEditReceiptRoute(id))
                     }
                 )
             }
             composable<AddEditWarrantyRoute> {
-                AddEditWarrantyRoute(
+                AddEditWarrantyScreen(
                     onBackClick = {
                         navController.popBackStack()
                     }

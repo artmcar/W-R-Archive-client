@@ -2,8 +2,8 @@ package com.artmcar.wrarchive.di
 
 import android.content.Context
 import androidx.room.Room
-import com.artmcar.wrarchive.data.local.room.WarrantyDao
-import com.artmcar.wrarchive.data.local.room.WarrantyDatabase
+import com.artmcar.wrarchive.data.local.room.warranty.WarrantyDao
+import com.artmcar.wrarchive.data.local.room.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,11 +19,11 @@ object DatabaseModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
-    ): WarrantyDatabase {
+    ): AppDatabase {
 
         return Room.databaseBuilder(
             context,
-            WarrantyDatabase::class.java,
+            AppDatabase::class.java,
             "warranty_database"
         ).build()
     }
@@ -31,7 +31,7 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideWarrantyDao(
-        database: WarrantyDatabase
+        database: AppDatabase
     ): WarrantyDao {
 
         return database.warrantyDao()

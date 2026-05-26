@@ -1,4 +1,4 @@
-package com.artmcar.wrarchive.data.local.room
+package com.artmcar.wrarchive.data.local.room.warranty
 
 import androidx.room.Dao
 import androidx.room.Insert

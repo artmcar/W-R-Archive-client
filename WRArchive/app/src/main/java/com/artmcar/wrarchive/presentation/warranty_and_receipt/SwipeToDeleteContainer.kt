@@ -1,4 +1,4 @@
-package com.artmcar.wrarchive.presentation.warranty
+package com.artmcar.wrarchive.presentation.warranty_and_receipt
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,19 +13,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.artmcar.wrarchive.domain.model.WarrantyModel
 
 
 @Composable
-fun SwipeToDeleteContainer(
-    item: WarrantyModel,
-    onDelete: () -> Unit,
+fun <T> SwipeToDeleteContainer(
+    item: T,
+    onDelete: (T) -> Unit,
     content: @Composable () -> Unit
 ) {
     val dismissState = rememberSwipeToDismissBoxState(
             confirmValueChange = {
                 if(it == SwipeToDismissBoxValue.EndToStart) {
-                    onDelete()
+                    onDelete(item)
                 }
                 true
             }

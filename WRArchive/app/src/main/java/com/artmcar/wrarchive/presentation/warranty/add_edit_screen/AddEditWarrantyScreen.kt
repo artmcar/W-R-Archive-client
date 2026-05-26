@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,9 +15,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,6 +37,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
 import com.artmcar.wrarchive.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +54,7 @@ fun AddEditWarrantyScreen(
     ) { uri ->
         viewModel.updateImage(uri)
     }
+    val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -85,6 +94,33 @@ fun AddEditWarrantyScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                OutlinedTextField(
+                    value = uiState.expirationDate,
+                    onValueChange = {
+                        viewModel.updateDate(it)
+                    },
+
+                    label = {
+                        Text(stringResource(R.string.expiration_date_label))
+                    },
+                    modifier = Modifier.weight(1f),
+                    placeholder = { Text(stringResource(R.string.dd_mm_yyyy)) }
+                )
+                FloatingActionButton(
+                    onClick = {
+                        val currentDate = formatter.format(Date())
+                        viewModel.updateDate(currentDate)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = null
+                    )
+                }
+            }
             Button(
                 onClick = {
                     imagePicker.launch(

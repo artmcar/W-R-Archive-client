@@ -1,4 +1,4 @@
-package com.artmcar.wrarchive.presentation.warranty
+package com.artmcar.wrarchive.presentation.receipt
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,22 +20,22 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.artmcar.wrarchive.presentation.warranty_and_receipt.SwipeToDeleteContainer
 
-
 @Composable
-fun WarrantyScreen(
+fun ReceiptScreen(
     onProfileClick: () -> Unit,
     onAddClick: () -> Unit,
     onEditClick: (Int) -> Unit,
-    viewModel: WarrantyViewModel = hiltViewModel()
+    viewModel: ReceiptViewModel =
+        hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
-            WarrantyTopBar(
+            ReceiptTopBar(
                 onProfileClick = onProfileClick,
                 onSortClick = {
                     viewModel.onEvent(
-                        WarrantyEvent.ToggleSortOrder
+                        ReceiptEvent.ToggleSortOrder
                     )
                 }
             )
@@ -43,7 +43,7 @@ fun WarrantyScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onAddClick
-            ){
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null
@@ -56,32 +56,33 @@ fun WarrantyScreen(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            if(uiState.warranties.isEmpty()) {
-
-                EmptyWarrantyScreen()
-            }
-            else {
+            if(uiState.receipts.isEmpty()) {
+                EmptyReceiptScreen()
+            } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(
-                        items = uiState.warranties,
-                        key = {it.localId}
-                        ) { item ->
+                        items = uiState.receipts,
+                        key = { it.localId }
+                    ) { item ->
                         SwipeToDeleteContainer(
                             item = item,
                             onDelete = {
                                 viewModel.onEvent(
-                                    WarrantyEvent.DeleteWarranty(it)
+                                    ReceiptEvent
+                                        .DeleteReceipt(it)
                                 )
                             }
                         ) {
-                            WarrantyItem(
+                            ReceiptItem(
                                 item = item,
                                 onClick = {
-                                    onEditClick(item.localId)
+                                    onEditClick(
+                                        item.localId
+                                    )
                                 }
                             )
                         }

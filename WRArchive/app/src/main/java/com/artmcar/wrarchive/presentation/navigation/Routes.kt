@@ -27,3 +27,7 @@ object MainGraph
 data class AddEditWarrantyRoute(
     val warrantyId: Int? = null
 )
+@Serializable
+data class AddEditReceiptRoute(
+    val receiptId: Int? = null
+)
