@@ -1,10 +1,27 @@
 package com.artmcar.wrarchive.presentation.navigation
 
-sealed class Routes(val route: String) {
-    object Login: Routes("login")
-    object Register: Routes("register")
-    object Warranty: Routes("warranty")
-    object Receipt: Routes("receipt")
-    object Profile: Routes("profile")
-    object Main: Routes("main")
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+object LoginRoute
+
+@Serializable
+object RegisterRoute
+
+@Serializable
+object MainRoute
+
+@Serializable
+object WarrantyRoute
+
+@Serializable
+object ReceiptRoute
+
+@Serializable
+object ProfileRoute
+
+@Serializable
+object AuthGraph
+
+@Serializable
+object MainGraph

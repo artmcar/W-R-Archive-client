@@ -3,47 +3,69 @@ package com.artmcar.wrarchive.presentation.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.artmcar.wrarchive.presentation.auth.LoginScreen
+import com.artmcar.wrarchive.presentation.auth.RegisterScreen
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Routes.Login.route) {
-        composable(Routes.Login.route) {
-            LoginScreen(
-                onLoginClick = {
-                    navController.navigate(Routes.Main.route)
-                },
-                onRegisterClick = {
-                    navController.navigate(Routes.Register.route)
-                }
-            )
+    NavHost(navController = navController, startDestination = AuthGraph) {
+        navigation<AuthGraph>(
+            startDestination = LoginRoute
+        ){
+            composable<LoginRoute> {
+                LoginScreen(
+                    onLoginClick = {
+                        navController.navigate(MainGraph){
+                            popUpTo(AuthGraph){
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onRegisterClick = {
+                        navController.navigate(RegisterRoute)
+                    }
+                )
+            }
+            composable<RegisterRoute> {
+                RegisterScreen(
+                    onLoginClick = {
+                        navController.popBackStack()
+                    },
+                    onRegisterClick = {
+                        navController.navigate(MainGraph){
+                            popUpTo(AuthGraph){
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
         }
-//        composable(Routes.Register.route) {
-//            RegisterScreen(
-//                onRegisterSuccess = {
-//                    navController.popBackStack()
-//                },
-//                onBackClick = {
-//                    navController.popBackStack()
-//                }
-//            )
-//        }
-//        composable(Routes.Main.route) {
-//            MainScreen(navController)
-//        }
-//        composable(Routes.Profile.route) {
-//            ProfileScreen(
-//                onLogout = {
-//                    navController.navigate(Routes.Login.route){
-//                        popUpTo(0)
-//                    }
-//                },
-//                onBack = {
-//                    navController.popBackStack()
-//                }
-//            )
-//        }
+        navigation<MainGraph>(
+            startDestination = WarrantyRoute
+        ){
+            composable<WarrantyRoute> {
+                MainScreen(
+                    rootNavController = navController
+                )
+            }
+            composable<ProfileRoute> {
+                ProfileScreen(
+                    onLogout = {
+                        navController.navigate(AuthGraph){
+                            popUpTo(MainGraph){
+                                inclusive = true
+                            }
+                        }
+                    },
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+        }
     }
 }

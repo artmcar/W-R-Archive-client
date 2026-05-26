@@ -34,10 +34,10 @@ import androidx.compose.ui.unit.dp
 import com.artmcar.wrarchive.R
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen (
     onLoginClick: ()->Unit,
     onRegisterClick: ()->Unit
-) {
+){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -45,7 +45,7 @@ fun LoginScreen(
         .fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
-        ){
+    ){
         Surface (
             color = Color.Blue,
             modifier = Modifier
@@ -75,22 +75,22 @@ fun LoginScreen(
             )
             {
                 TextButton(
-                    onClick = { },
-                    colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
+                    onClick = onLoginClick,
+                    colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(Color.Blue)
+                        .background(Color.LightGray)
                 ) {
                     Text("Login")
                 }
                 TextButton(
-                    onClick = onRegisterClick,
-                    colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
+                    onClick = { },
+                    colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(8.dp))
-                        .background(Color.LightGray)
+                        .background(Color.Blue)
                 ) {
                     Text("Register")
                 }
@@ -101,34 +101,33 @@ fun LoginScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = {email = it},
-                label = {Text(stringResource(id = R.string.email_text_field))},
+                label = { Text(stringResource(id = R.string.email_text_field)) },
                 modifier =  Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(12.dp))
             OutlinedTextField(
                 value = password,
-                onValueChange = {password = it},
-                label = {Text(stringResource(id = R.string.password_text_field))},
+                    onValueChange = {password = it},
+                label = { Text(stringResource(id = R.string.password_text_field)) },
                 modifier =  Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation()
             )
             Spacer(modifier = Modifier.height(24.dp))
             Button(
-                onClick = onLoginClick,
+                onClick = onRegisterClick,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(id = R.string.login_button))
+                Text(stringResource(id = R.string.register_button))
             }
         }
 
     }
 
 }
-
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
-    LoginScreen(
+fun RegisterScreenPreview() {
+    RegisterScreen(
         onLoginClick = {},
         onRegisterClick = {}
     )
