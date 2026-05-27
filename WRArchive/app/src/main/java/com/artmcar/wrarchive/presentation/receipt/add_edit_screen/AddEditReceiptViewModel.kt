@@ -114,9 +114,7 @@ class AddEditReceiptViewModel @Inject constructor(
                     it != null
                 }
                 eventChannel.send(
-                    UiEvent.ShowSnackbar(
-                        errorMessageRes?: R.string.unknown_error
-                    )
+                    UiEvent.ShowSnackbar(errorMessageRes?: R.string.unknown_error)
                 )
                 return@launch
             }

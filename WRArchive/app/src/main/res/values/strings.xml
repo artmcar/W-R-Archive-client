@@ -36,6 +36,8 @@
     <string name="date_empty">Date cannot be empty</string>
     <string name="invalid_date_format">Invalid date format</string>
     <string name="unknown_error">Unknown error</string>
+    <string name="login_failed">Login failed</string>
+    <string name="register_failed">Registration failed</string>
 
 
 </resources>

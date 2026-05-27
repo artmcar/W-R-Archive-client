@@ -2,7 +2,6 @@ package com.artmcar.wrarchive.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.artmcar.wrarchive.data.preferences.SettingsManager
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetCloudSyncUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetDarkThemeUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetRememberLoginUseCase

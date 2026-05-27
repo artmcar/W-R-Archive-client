@@ -1,10 +1,12 @@
 package com.artmcar.wrarchive.di
 
+import com.artmcar.wrarchive.data.repository.AuthRepositoryImpl
 import com.artmcar.wrarchive.domain.repository.ReceiptRepository
 import com.artmcar.wrarchive.data.repository.ReceiptRepositoryImpl
 import com.artmcar.wrarchive.data.repository.SettingsRepositoryImpl
 import com.artmcar.wrarchive.domain.repository.WarrantyRepository
 import com.artmcar.wrarchive.data.repository.WarrantyRepositoryImpl
+import com.artmcar.wrarchive.domain.repository.AuthRepository
 import com.artmcar.wrarchive.domain.repository.SettingsRepository
 import dagger.Binds
 import dagger.Module
@@ -27,4 +29,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
 }

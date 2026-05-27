@@ -1,0 +1,33 @@
+package com.artmcar.wrarchive.presentation.auth
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.artmcar.wrarchive.domain.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+
+@HiltViewModel
+class AuthStateViewModel @Inject constructor(
+    private val authRepository: AuthRepository) : ViewModel() {
+    private val _state = MutableStateFlow(AuthState())
+    val state = _state.asStateFlow()
+    init { observeAuth() }
+    private fun observeAuth() {
+        viewModelScope.launch {
+            authRepository.isLoggedInFlow
+                .collect { loggedIn ->
+                    _state.update {
+                        it.copy(
+                            isAuthorized = loggedIn,
+                            isLoading = false
+                        )
+                    }
+                }
+        }
+    }
+}

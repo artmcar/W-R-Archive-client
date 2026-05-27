@@ -25,4 +25,7 @@ class SettingsRepositoryImpl @Inject constructor(
     ) {
         dataStore.setRememberLogin(enabled)
     }
+    override fun getRememberLogin(): Flow<Boolean> {
+        return dataStore.rememberLoginFlow
+    }
 }
