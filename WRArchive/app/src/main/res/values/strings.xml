@@ -31,6 +31,11 @@
     <string name="purchase_date_label">Purchase Date</string>
     <string name="dd_mm_yyyy">dd.MM.yyyy</string>
     <string name="back">Back</string>
+    <string name="title_empty">Title cannot be empty</string>
+    <string name="title_short">Title is too short</string>
+    <string name="date_empty">Date cannot be empty</string>
+    <string name="invalid_date_format">Invalid date format</string>
+    <string name="unknown_error">Unknown error</string>
 
 
 </resources>

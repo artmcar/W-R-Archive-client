@@ -26,17 +26,23 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
 import com.artmcar.wrarchive.R
+import com.artmcar.wrarchive.presentation.util.UiEvent
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -49,6 +55,17 @@ fun AddEditReceiptScreen(
     viewModel: AddEditReceiptViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when(event) {
+                is UiEvent.ShowSnackbar -> {
+                    snackbarHostState.showSnackbar(context.getString(event.messageRes))
+                }
+            }
+        }
+    }
     val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()
     )
     val imagePicker = rememberLauncherForActivityResult(
@@ -57,6 +74,9 @@ fun AddEditReceiptScreen(
             viewModel.updateImage(uri)
         }
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             CenterAlignedTopAppBar(
                 navigationIcon = {
