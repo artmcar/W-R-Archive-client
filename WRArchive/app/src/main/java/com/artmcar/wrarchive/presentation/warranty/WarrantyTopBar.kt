@@ -19,26 +19,28 @@ fun WarrantyTopBar(
     onSortClick: () -> Unit
 ) {
     CenterAlignedTopAppBar(
+        navigationIcon = {
+            IconButton(
+                onClick = onProfileClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null
+                )
+            }
+        },
         title = {
             Text(stringResource(R.string.warranties))
         },
         actions = {
             IconButton(
-                onClick = onProfileClick
+                onClick = onSortClick
             ) {
                 Icon(
                     //Todo подобрать иконку для сортировки
                     imageVector = Icons.Default.KeyboardArrowDown,
                     contentDescription = null
                 )
-            }
-            IconButton(
-                onClick = onProfileClick
-            ) {
-               Icon(
-                   imageVector = Icons.Default.Person,
-                   contentDescription = null
-               )
             }
         }
     )

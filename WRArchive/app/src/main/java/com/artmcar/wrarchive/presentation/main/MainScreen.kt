@@ -34,38 +34,43 @@ fun MainScreen (
 ){
     val navController = rememberNavController()
     val items = listOf(BottomNavItem.Warranty, BottomNavItem.Receipt)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val showBottomBar =
+        currentDestination?.route == WarrantyRoute::class.qualifiedName ||
+                currentDestination?.route == ReceiptRoute::class.qualifiedName
     Scaffold(
         bottomBar = {
-            NavigationBar{
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                items.forEach{item ->
-                    NavigationBarItem(
-                        selected = currentDestination
-                            ?.hierarchy
-                            ?.any {
-                                it.route == item.route::class.qualifiedName
-                            } == true,
-                        onClick = {
-                            navController.navigate(item.route){
-                                popUpTo(navController
-                                    .graph
-                                    .findStartDestination()
-                                    .id){
-                                    saveState = true
+            if(showBottomBar){
+                NavigationBar{
+                    items.forEach{item ->
+                        NavigationBarItem(
+                            selected = currentDestination
+                                ?.hierarchy
+                                ?.any {
+                                    it.route == item.route::class.qualifiedName
+                                } == true,
+                            onClick = {
+                                navController.navigate(item.route){
+                                    popUpTo(navController
+                                        .graph
+                                        .findStartDestination()
+                                        .id){
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = item.icon,
-                                contentDescription = stringResource(item.labelRes)
-                            )
-                        },
-                        label = {Text(stringResource(item.labelRes))}
-                    )
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = item.icon,
+                                    contentDescription = stringResource(item.labelRes)
+                                )
+                            },
+                            label = {Text(stringResource(item.labelRes))}
+                        )
+                    }
                 }
             }
         }

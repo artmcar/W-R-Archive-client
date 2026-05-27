@@ -19,6 +19,16 @@ fun ReceiptTopBar(
     onSortClick: () -> Unit
 ) {
     CenterAlignedTopAppBar(
+        navigationIcon = {
+            IconButton(
+                onClick = onProfileClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null
+                )
+            }
+        },
         title = {
             Text(stringResource(R.string.receipts))
         },
@@ -29,14 +39,6 @@ fun ReceiptTopBar(
                 Icon(
                     //TODO подобрать иконку для сортировки
                     imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = null
-                )
-            }
-            IconButton(
-                onClick = onProfileClick
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
                     contentDescription = null
                 )
             }

@@ -30,5 +30,7 @@
     <string name="expiration_date_label">Expiration Date</string>
     <string name="purchase_date_label">Purchase Date</string>
     <string name="dd_mm_yyyy">dd.MM.yyyy</string>
+    <string name="back">Back</string>
+
 
 </resources>
