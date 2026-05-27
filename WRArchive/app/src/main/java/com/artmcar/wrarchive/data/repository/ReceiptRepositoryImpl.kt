@@ -1,10 +1,11 @@
-package com.artmcar.wrarchive.domain.repository
+package com.artmcar.wrarchive.data.repository
 
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.data.local.room.receipt.ReceiptDao
 import com.artmcar.wrarchive.data.mapper.toDomain
 import com.artmcar.wrarchive.data.mapper.toEntity
 import com.artmcar.wrarchive.domain.model.ReceiptModel
+import com.artmcar.wrarchive.domain.repository.ReceiptRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

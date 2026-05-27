@@ -1,10 +1,11 @@
-package com.artmcar.wrarchive.domain.repository
+package com.artmcar.wrarchive.data.repository
 
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.data.local.room.warranty.WarrantyDao
 import com.artmcar.wrarchive.data.mapper.toDomain
 import com.artmcar.wrarchive.data.mapper.toEntity
 import com.artmcar.wrarchive.domain.model.WarrantyModel
+import com.artmcar.wrarchive.domain.repository.WarrantyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

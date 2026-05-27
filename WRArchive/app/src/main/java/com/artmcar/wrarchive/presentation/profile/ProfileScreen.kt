@@ -31,8 +31,7 @@ import com.artmcar.wrarchive.R
 fun ProfileScreen(
     onLogout: () -> Unit,
     onBack: () -> Unit,
-    viewModel: ProfileViewModel =
-        hiltViewModel()
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Scaffold(
@@ -49,7 +48,7 @@ fun ProfileScreen(
                     }
                 },
                 title = {
-                    Text(stringResource(R.string.profile))
+                    Text(text = stringResource(R.string.profile))
                 }
             )
         }
@@ -64,49 +63,30 @@ fun ProfileScreen(
         ) {
             ListItem(
                 headlineContent = {
-                    Text(stringResource(R.string.dark_theme))
+                    Text(text = stringResource(R.string.dark_theme))
                 },
                 trailingContent = {
                     Switch(
-                        checked =
-                            uiState.darkTheme,
-
-                        onCheckedChange = {
-
-                            viewModel.updateDarkTheme(it)
-                        }
+                        checked = uiState.darkTheme,
+                        onCheckedChange = { viewModel.setDarkTheme(it) }
                     )
                 }
             )
             ListItem(
-                headlineContent = {
-                    Text(stringResource(R.string.cloud_sync))
-                },
+                headlineContent = { Text(text = stringResource(R.string.cloud_sync)) },
                 trailingContent = {
                     Switch(
-                        checked =
-                            uiState.cloudSync,
-
-                        onCheckedChange = {
-
-                            viewModel.updateCloudSync(it)
-                        }
+                        checked = uiState.cloudSync,
+                        onCheckedChange = { viewModel.setCloudSync(it) }
                     )
                 }
             )
             ListItem(
-                headlineContent = {
-                    Text(stringResource(R.string.remember_login))
-                },
+                headlineContent = { Text(text = stringResource(R.string.remember_login)) },
                 trailingContent = {
                     Switch(
-                        checked =
-                            uiState.rememberLogin,
-
-                        onCheckedChange = {
-
-                            viewModel.updateRememberLogin(it)
-                        }
+                        checked = uiState.rememberLogin,
+                        onCheckedChange = { viewModel.setRememberLogin(it) }
                     )
                 }
             )
@@ -114,7 +94,7 @@ fun ProfileScreen(
                 onClick = onLogout,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.logout))
+                Text(text = stringResource(R.string.logout))
             }
         }
     }

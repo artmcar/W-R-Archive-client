@@ -1,9 +1,11 @@
 package com.artmcar.wrarchive.di
 
 import com.artmcar.wrarchive.domain.repository.ReceiptRepository
-import com.artmcar.wrarchive.domain.repository.ReceiptRepositoryImpl
+import com.artmcar.wrarchive.data.repository.ReceiptRepositoryImpl
+import com.artmcar.wrarchive.data.repository.SettingsRepositoryImpl
 import com.artmcar.wrarchive.domain.repository.WarrantyRepository
-import com.artmcar.wrarchive.domain.repository.WarrantyRepositoryImpl
+import com.artmcar.wrarchive.data.repository.WarrantyRepositoryImpl
+import com.artmcar.wrarchive.domain.repository.SettingsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +23,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindReceiptRepository(impl: ReceiptRepositoryImpl): ReceiptRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindSettingsRepository(impl: SettingsRepositoryImpl): SettingsRepository
 }

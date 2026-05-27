@@ -3,6 +3,12 @@ package com.artmcar.wrarchive.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.data.preferences.SettingsManager
+import com.artmcar.wrarchive.domain.usecase.settings_uc.GetCloudSyncUseCase
+import com.artmcar.wrarchive.domain.usecase.settings_uc.GetDarkThemeUseCase
+import com.artmcar.wrarchive.domain.usecase.settings_uc.GetRememberLoginUseCase
+import com.artmcar.wrarchive.domain.usecase.settings_uc.SetCloudSyncUseCase
+import com.artmcar.wrarchive.domain.usecase.settings_uc.SetDarkThemeUseCase
+import com.artmcar.wrarchive.domain.usecase.settings_uc.SetRememberLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,7 +19,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val settingsManager: SettingsManager
+    private val getDarkThemeUseCase: GetDarkThemeUseCase,
+    private val getCloudSyncUseCase: GetCloudSyncUseCase,
+    private val getRememberLoginUseCase: GetRememberLoginUseCase,
+    private val setDarkThemeUseCase: SetDarkThemeUseCase,
+    private val setCloudSyncUseCase: SetCloudSyncUseCase,
+    private val setRememberLoginUseCase: SetRememberLoginUseCase
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState = _uiState.asStateFlow()
@@ -23,9 +34,9 @@ class ProfileViewModel @Inject constructor(
     private fun observeSettings() {
         viewModelScope.launch {
             combine(
-                settingsManager.darkThemeFlow,
-                settingsManager.cloudSyncFlow,
-                settingsManager.rememberLoginFlow
+                getDarkThemeUseCase(),
+                getCloudSyncUseCase(),
+                getRememberLoginUseCase()
             ) { dark, cloud, remember ->
                 ProfileUiState(
                     darkTheme = dark,
@@ -39,19 +50,19 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
-    fun updateDarkTheme(value: Boolean) {
+    fun setDarkTheme(enabled: Boolean) {
         viewModelScope.launch {
-            settingsManager.setDarkTheme(value)
+            setDarkThemeUseCase(enabled)
         }
     }
-    fun updateCloudSync(value: Boolean) {
+    fun setCloudSync(enabled: Boolean) {
         viewModelScope.launch {
-            settingsManager.setCloudSync(value)
+            setCloudSyncUseCase(enabled)
         }
     }
-    fun updateRememberLogin(value: Boolean) {
+    fun setRememberLogin(enabled: Boolean) {
         viewModelScope.launch {
-            settingsManager.setRememberLogin(value)
+            setRememberLoginUseCase(enabled)
         }
     }
 }
