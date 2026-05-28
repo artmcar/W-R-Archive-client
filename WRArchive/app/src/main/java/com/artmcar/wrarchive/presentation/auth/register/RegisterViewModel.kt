@@ -3,6 +3,7 @@ package com.artmcar.wrarchive.presentation.auth.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.R
+import com.artmcar.wrarchive.domain.repository.SyncRepository
 import com.artmcar.wrarchive.domain.usecase.auth.RegisterUseCase
 import com.artmcar.wrarchive.presentation.auth.AuthUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerUseCase: RegisterUseCase
+    private val registerUseCase: RegisterUseCase,
+    private val syncRepository: SyncRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState = _uiState.asStateFlow()
@@ -33,7 +35,10 @@ class RegisterViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
             val success = registerUseCase(_uiState.value.email, _uiState.value.password)
             _uiState.update { it.copy(isLoading = false) }
-            if(success) { onSuccess() }
+            if(success) {
+                syncRepository.downloadRemoteData()
+                onSuccess()
+            }
             else {
                 _uiState.update { it.copy(errorRes = R.string.register_failed) }
             }

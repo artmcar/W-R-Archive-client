@@ -3,6 +3,7 @@ package com.artmcar.wrarchive.presentation.auth.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.R
+import com.artmcar.wrarchive.domain.repository.SyncRepository
 import com.artmcar.wrarchive.domain.usecase.auth.LoginUseCase
 import com.artmcar.wrarchive.presentation.auth.AuthUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase:
-    LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val syncRepository: SyncRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState = _uiState.asStateFlow()
@@ -38,7 +39,10 @@ class LoginViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = false)
             }
-            if(success) { onSuccess() }
+            if(success) {
+                syncRepository.downloadRemoteData()
+                onSuccess()
+            }
             else { _uiState.update { it.copy(errorRes = R.string.login_failed) }
             }
         }

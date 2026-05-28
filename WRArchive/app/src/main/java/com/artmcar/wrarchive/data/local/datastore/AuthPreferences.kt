@@ -19,28 +19,24 @@ class AuthPreferences @Inject constructor(
     companion object {
         private val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
         private val USER_EMAIL = stringPreferencesKey("user_email")
-        private val REMEMBER_LOGIN = booleanPreferencesKey("remember_login")
+        private val JWT_TOKEN = stringPreferencesKey("jwt_token")
     }
     val isLoggedInFlow: Flow<Boolean> = context.authDataStore.data.map { it[IS_LOGGED_IN] ?: false }
     val userEmailFlow: Flow<String?> = context.authDataStore.data.map { it[USER_EMAIL] }
-    val rememberLoginFlow: Flow<Boolean> = context.authDataStore.data.map { it[REMEMBER_LOGIN] ?: false }
-    suspend fun login(email: String)
+    val tokenFlow: Flow<String?> = context.authDataStore.data.map { it[JWT_TOKEN] }
+    suspend fun login(email: String, token: String)
     {
         context.authDataStore.edit {
             it[IS_LOGGED_IN] = true
             it[USER_EMAIL] = email
+            it[JWT_TOKEN] = token
         }
     }
     suspend fun logout() {
         context.authDataStore.edit {
             it[IS_LOGGED_IN] = false
-            it[REMEMBER_LOGIN] = false
             it.remove(USER_EMAIL)
-        }
-    }
-    suspend fun setRememberLogin(enabled: Boolean) {
-        context.authDataStore.edit {
-            it[REMEMBER_LOGIN] = enabled
+            it.remove(JWT_TOKEN)
         }
     }
 }

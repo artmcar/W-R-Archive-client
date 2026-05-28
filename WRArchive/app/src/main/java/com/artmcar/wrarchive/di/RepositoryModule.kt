@@ -4,10 +4,12 @@ import com.artmcar.wrarchive.data.repository.AuthRepositoryImpl
 import com.artmcar.wrarchive.domain.repository.ReceiptRepository
 import com.artmcar.wrarchive.data.repository.ReceiptRepositoryImpl
 import com.artmcar.wrarchive.data.repository.SettingsRepositoryImpl
+import com.artmcar.wrarchive.data.repository.SyncRepositoryImpl
 import com.artmcar.wrarchive.domain.repository.WarrantyRepository
 import com.artmcar.wrarchive.data.repository.WarrantyRepositoryImpl
 import com.artmcar.wrarchive.domain.repository.AuthRepository
 import com.artmcar.wrarchive.domain.repository.SettingsRepository
+import com.artmcar.wrarchive.domain.repository.SyncRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,4 +35,10 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    abstract fun bindSyncRepository(
+        impl:   SyncRepositoryImpl
+    ): SyncRepository
+
 }

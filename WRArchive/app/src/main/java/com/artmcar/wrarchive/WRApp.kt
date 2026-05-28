@@ -1,7 +1,21 @@
 package com.artmcar.wrarchive
 
 import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
-class WRApp : Application()
+class WRApp : Application(), Configuration.Provider {
+
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+    override val workManagerConfiguration: Configuration
+    get() =
+        Configuration.Builder()
+            .setWorkerFactory(
+                workerFactory
+            )
+            .build()
+}

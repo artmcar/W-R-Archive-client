@@ -33,10 +33,9 @@ fun AppNavigation() {
         return
     }
     val navController = rememberNavController()
-    val startDestination = if(authState.isAuthorized){ MainRoute } else {AuthGraph}
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = if(authState.isAuthorized){ MainRoute } else {AuthGraph}
     ) {
         navigation<AuthGraph>(
             startDestination = LoginRoute
@@ -47,7 +46,9 @@ fun AppNavigation() {
                         navController.navigate(
                             MainRoute
                         ) {
-                            popUpTo(0)
+                            popUpTo(AuthGraph) {
+                                inclusive = true
+                            }
                         }
                     },
                     onRegisterClick = {
@@ -66,7 +67,9 @@ fun AppNavigation() {
                         navController.navigate(
                             MainRoute
                         ) {
-                            popUpTo(0)
+                            popUpTo(AuthGraph) {
+                                inclusive = true
+                            }
                         }
                     }
                 )

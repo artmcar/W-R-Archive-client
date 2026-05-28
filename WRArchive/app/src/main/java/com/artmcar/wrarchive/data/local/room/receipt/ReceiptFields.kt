@@ -9,7 +9,7 @@ import com.artmcar.wrarchive.data.local.room.SyncStatus
 data class ReceiptFields(
     @PrimaryKey(autoGenerate = true)
     val localId: Int = 0,
-    val remoteId: Int?,
+    val remoteId: Int? = null,
     val title: String,
     val description: String,
     val purchaseDate: Long,

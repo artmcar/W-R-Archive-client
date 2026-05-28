@@ -6,7 +6,7 @@
     <string name="register_button">Register</string>
     <string name="warranty_label">Warranty</string>
     <string name="receipt_label">Receipt</string>
-    <string name="expires">Expires</string>
+    <string name="expires">Expires: %1$s</string>
     <string name="add_warranty">Add Warranty</string>
     <string name="edit_warranty">Edit Warranty</string>
     <string name="add_receipt">Add Receipt</string>
@@ -25,7 +25,7 @@
     <string name="logout">Logout</string>
     <string name="receipts">Receipts</string>
     <string name="warranties">Warranties</string>
-    <string name="purchase">Purchase</string>
+    <string name="purchase">Purchase: %1$s</string>
     <string name="no_receipts_yet">No receipts yet</string>
     <string name="expiration_date_label">Expiration Date</string>
     <string name="purchase_date_label">Purchase Date</string>
@@ -38,6 +38,11 @@
     <string name="unknown_error">Unknown error</string>
     <string name="login_failed">Login failed</string>
     <string name="register_failed">Registration failed</string>
+    <string name="warranty_image">Warranty Image</string>
+    <string name="receipt_image">Receipt Image</string>
+    <string name="status_waiting_create">Waiting for upload</string>
+    <string name="status_waiting_update">Waiting for update</string>
+    <string name="status_waiting_delete">Waiting for delete</string>
 
 
 </resources>
