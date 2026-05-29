@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.artmcar.wrarchive.R
+import com.artmcar.wrarchive.data.local.ImageStorageManager
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.WarrantyModel
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.AddWarrantyUseCase
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -36,7 +38,8 @@ class AddEditWarrantyViewModel @Inject constructor(
     private val updateWarrantyUseCase: UpdateWarrantyUseCase,
     private val getWarrantyByIdUseCase: GetWarrantyByIdUseCase,
     private val validateTitle: ValidateTitle,
-    private val validateDate: ValidateDate
+    private val validateDate: ValidateDate,
+    private val imageStorageManager: ImageStorageManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AddEditWarrantyUiState())
     val uiState: StateFlow<AddEditWarrantyUiState> = _uiState.asStateFlow()
@@ -70,7 +73,15 @@ class AddEditWarrantyViewModel @Inject constructor(
                                     it.expirationDate
                                 )
                             ),
-                        imageUri = it.imagePath?.let(Uri::parse),
+                        imageUri =
+                            it.imagePath?.let { path ->
+                                if(path.startsWith("/uploads")) {
+                                    Uri.parse("http://10.0.2.2:8080$path")
+                                } else {
+                                    Uri.fromFile(File(path))
+                                }
+                            },
+                        imagePath = it.imagePath,
                         createdAt = it.createdAt,
                         isEditMode = true,
                         isLoading = false
@@ -79,7 +90,6 @@ class AddEditWarrantyViewModel @Inject constructor(
             }
         }
     }
-
     fun updateTitle(value: String) {
         _uiState.update {
             it.copy(
@@ -95,10 +105,10 @@ class AddEditWarrantyViewModel @Inject constructor(
         }
     }
     fun updateImage(uri: Uri?) {
+        if(uri == null) return
+        val savedPath = imageStorageManager.saveImageFromUri(uri)
         _uiState.update {
-            it.copy(
-                imageUri = uri
-            )
+            it.copy(imageUri = Uri.fromFile(File(savedPath)), imagePath = savedPath)
         }
     }
     fun saveWarranty(
@@ -133,7 +143,7 @@ class AddEditWarrantyViewModel @Inject constructor(
                 title = currentState.title,
                 description = currentState.description,
                 expirationDate = parsedDate,
-                imagePath = currentState.imageUri?.toString(),
+                imagePath = currentState.imagePath,
                 createdAt =
                     if(currentState.isEditMode){
                         currentState.createdAt

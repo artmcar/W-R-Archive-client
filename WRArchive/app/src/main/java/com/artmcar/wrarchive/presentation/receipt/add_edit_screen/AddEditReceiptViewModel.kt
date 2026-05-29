@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.artmcar.wrarchive.R
+import com.artmcar.wrarchive.data.local.ImageStorageManager
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.ReceiptModel
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.AddReceiptUseCase
@@ -23,6 +24,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -35,7 +37,8 @@ class AddEditReceiptViewModel @Inject constructor(
     private val updateReceiptUseCase: UpdateReceiptUseCase,
     private val getReceiptByIdUseCase: GetReceiptByIdUseCase,
     private val validateTitle: ValidateTitle,
-    private val validateDate: ValidateDate
+    private val validateDate: ValidateDate,
+    private val imageStorageManager: ImageStorageManager
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AddEditReceiptUiState())
     val uiState: StateFlow<AddEditReceiptUiState> = _uiState.asStateFlow()
@@ -67,7 +70,15 @@ class AddEditReceiptViewModel @Inject constructor(
                         title = it.title,
                         description = it.description,
                         purchaseDate = formatter.format(Date(it.purchaseDate)),
-                        imageUri = it.imagePath?.let(Uri::parse),
+                        imageUri =
+                            it.imagePath?.let { path ->
+                                if(path.startsWith("/uploads")) {
+                                    Uri.parse("http://10.0.2.2:8080$path")
+                                } else {
+                                    Uri.fromFile(File(path))
+                                }
+                            },
+                        imagePath = it.imagePath,
                         createdAt = it.createdAt,
                         isEditMode = true,
                         isLoading = false
@@ -92,8 +103,10 @@ class AddEditReceiptViewModel @Inject constructor(
         }
     }
     fun updateImage(uri: Uri?) {
+        if(uri == null) return
+        val savedPath = imageStorageManager.saveImageFromUri(uri)
         _uiState.update {
-            it.copy(imageUri = uri)
+            it.copy(imageUri = Uri.fromFile(File(savedPath)), imagePath = savedPath)
         }
     }
     fun saveReceipt(
@@ -126,7 +139,7 @@ class AddEditReceiptViewModel @Inject constructor(
                 title = currentState.title,
                 description = currentState.description,
                 purchaseDate = parsedDate,
-                imagePath = currentState.imageUri?.toString(),
+                imagePath = currentState.imagePath,
                 createdAt =
                     if(currentState.isEditMode){
                         currentState.createdAt

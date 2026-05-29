@@ -10,5 +10,6 @@ data class AddEditReceiptUiState(
     val imageUri: Uri? = null,
     val createdAt: Long = 0L,
     val isEditMode: Boolean = false,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val imagePath: String? = null
 )

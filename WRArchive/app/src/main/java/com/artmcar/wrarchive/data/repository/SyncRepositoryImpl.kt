@@ -1,5 +1,6 @@
 package com.artmcar.wrarchive.data.repository
 
+import android.util.Log
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.data.local.room.receipt.ReceiptDao
 import com.artmcar.wrarchive.data.local.room.warranty.WarrantyDao
@@ -39,13 +40,13 @@ class SyncRepositoryImpl @Inject constructor(
                 when(item.syncStatus) {
                     SyncStatus.CREATED -> {
                         val uploadedImage =
-                            item.imagePath?.let {
-                                if( it.startsWith("/uploads"))
+                            item.imagePath?.let {path ->
+                                if( path.startsWith("/uploads"))
                                 {
-                                    it
+                                    path
                                 }
                                 else {
-                                    uploadApi.uploadImage(token, it)
+                                    uploadApi.uploadImage(token, path)
                                 }
                             }
                         val response =
@@ -68,13 +69,13 @@ class SyncRepositoryImpl @Inject constructor(
                     }
                     SyncStatus.UPDATED -> {
                         val uploadedImage =
-                            item.imagePath?.let {
-                                if( it.startsWith("/uploads"))
+                            item.imagePath?.let { path ->
+                                if( path.startsWith("/uploads"))
                                 {
-                                    it
+                                    path
                                 }
                                 else {
-                                    uploadApi.uploadImage(token, it)
+                                    uploadApi.uploadImage(token, path)
                                 }
                             }
                         val remoteId = item.remoteId ?: return@forEach
@@ -106,8 +107,10 @@ class SyncRepositoryImpl @Inject constructor(
                     SyncStatus.SYNCED -> Unit
                 }
             } catch (e: Exception) {
-
-                e.printStackTrace()
+                Log.e(
+                    "SYNC_ERROR",
+                    e.stackTraceToString()
+                )
             }
         }
     }
@@ -188,7 +191,10 @@ class SyncRepositoryImpl @Inject constructor(
                     SyncStatus.SYNCED -> Unit
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                Log.e(
+                    "SYNC_ERROR",
+                    e.stackTraceToString()
+                )
             }
         }
     }
@@ -210,7 +216,10 @@ class SyncRepositoryImpl @Inject constructor(
             val remoteItems = warrantyApi.getAllWarranties(token)
             warrantyDao.upsertAll(remoteItems.map { it.toEntity() })
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(
+                "SYNC_ERROR",
+                e.stackTraceToString()
+            )
         }
     }
     private suspend fun downloadReceipts(
@@ -220,7 +229,10 @@ class SyncRepositoryImpl @Inject constructor(
             val remoteItems = receiptApi.getAllReceipts(token)
             receiptDao.upsertAll(remoteItems.map { it.toEntity() })
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(
+                "SYNC_ERROR",
+                e.stackTraceToString()
+            )
         }
     }
 }
