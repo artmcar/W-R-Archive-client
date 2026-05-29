@@ -1,6 +1,5 @@
 package com.artmcar.wrarchive.presentation.main
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -15,12 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.artmcar.wrarchive.presentation.navigation.AddEditReceiptRoute
 import com.artmcar.wrarchive.presentation.navigation.AddEditWarrantyRoute
-import com.artmcar.wrarchive.presentation.navigation.ProfileRoute
 import com.artmcar.wrarchive.presentation.navigation.ReceiptRoute
 import com.artmcar.wrarchive.presentation.navigation.WarrantyRoute
 import com.artmcar.wrarchive.presentation.receipt.ReceiptScreen

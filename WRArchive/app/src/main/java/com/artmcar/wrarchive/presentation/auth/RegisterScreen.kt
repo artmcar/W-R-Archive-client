@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.presentation.auth.register.RegisterViewModel
+import com.artmcar.wrarchive.ui.theme.ExtendedTheme
 
 @Composable
 fun RegisterScreen (
@@ -78,7 +79,7 @@ fun RegisterScreen (
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Surface (
-                color = Color.Blue,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.fillMaxWidth()
             ){
                 Text(
@@ -104,23 +105,22 @@ fun RegisterScreen (
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 )
                 {
-                    TextButton(
+                    Button(
                         onClick = onLoginClick,
-                        colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ExtendedTheme.colors.customButtonColors,
+                            contentColor = ExtendedTheme.colors.customTextColors),
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Color.LightGray)
                     ) {
                         Text(text = stringResource(R.string.login_button))
                     }
-                    TextButton(
+                    Button(
                         onClick = { },
-                        colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
+                        shape = RoundedCornerShape(8.dp),
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(Color.Blue)
                     ) {
                         Text(text = stringResource(R.string.register_button))
                     }
@@ -143,6 +143,7 @@ fun RegisterScreen (
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = { viewModel.register ( onSuccess = onRegisterSuccess ) },
+                    shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = stringResource(R.string.register_button))

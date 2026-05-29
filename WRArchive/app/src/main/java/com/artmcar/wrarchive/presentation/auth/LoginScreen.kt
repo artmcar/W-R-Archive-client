@@ -43,6 +43,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.presentation.auth.login.LoginViewModel
+import com.artmcar.wrarchive.ui.theme.ExtendedTheme
 
 @Composable
 fun LoginScreen(
@@ -80,7 +81,7 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Surface (
-                color = Color.Blue,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .fillMaxWidth()
             ){
@@ -107,23 +108,22 @@ fun LoginScreen(
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 )
                 {
-                    TextButton(
+                    Button(
                         onClick = { },
-                        colors = ButtonDefaults.textButtonColors(contentColor = Color.White),
+                        shape = RoundedCornerShape(8.dp),
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(Color.Blue)
                     ) {
                         Text(text = stringResource(R.string.login_button))
                     }
-                    TextButton(
+                    Button(
                         onClick = onRegisterClick,
-                        colors = ButtonDefaults.textButtonColors(contentColor = Color.Black),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = ExtendedTheme.colors.customButtonColors,
+                            contentColor = ExtendedTheme.colors.customTextColors),
                         modifier = Modifier
                             .weight(1f)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(Color.LightGray)
                     ) {
                         Text(text = stringResource(R.string.register_button))
                     }
@@ -147,6 +147,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
                     onClick = { viewModel.login( onSuccess = onLoginSuccess ) },
+                    shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(stringResource(id = R.string.login_button))

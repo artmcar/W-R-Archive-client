@@ -17,7 +17,7 @@ class AuthStateViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val validateSessionUseCase: ValidateSessionUseCase
 ) : ViewModel() {
-    private val _state = MutableStateFlow(AuthState())
+    private val _state = MutableStateFlow(AuthState(isLoading = true))
     val state = _state.asStateFlow()
     init {
         validateSession()
@@ -32,12 +32,7 @@ class AuthStateViewModel @Inject constructor(
         viewModelScope
             .launch{
                 authRepository.isLoggedInFlow.collect{
-                    loggedIn -> _state.update {
-                        it.copy(
-                            isAuthorized = loggedIn,
-                            isLoading = false
-                        )
-                    }
+                    loggedIn -> _state.value = AuthState(isAuthorized = loggedIn, isLoading = false)
                 }
             }
     }

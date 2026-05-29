@@ -1,6 +1,11 @@
 package com.artmcar.wrarchive.presentation.receipt.add_edit_screen
 
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
+import android.provider.MediaStore
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +14,7 @@ import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.data.local.ImageStorageManager
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.ReceiptModel
+import com.artmcar.wrarchive.domain.repository.SyncRepository
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.AddReceiptUseCase
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.GetReceiptByIdUseCase
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.UpdateReceiptUseCase
@@ -17,6 +23,7 @@ import com.artmcar.wrarchive.domain.validation.ValidateTitle
 import com.artmcar.wrarchive.presentation.navigation.AddEditReceiptRoute
 import com.artmcar.wrarchive.presentation.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +45,8 @@ class AddEditReceiptViewModel @Inject constructor(
     private val getReceiptByIdUseCase: GetReceiptByIdUseCase,
     private val validateTitle: ValidateTitle,
     private val validateDate: ValidateDate,
-    private val imageStorageManager: ImageStorageManager
+    private val imageStorageManager: ImageStorageManager,
+    private val syncRepository: SyncRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AddEditReceiptUiState())
     val uiState: StateFlow<AddEditReceiptUiState> = _uiState.asStateFlow()
@@ -109,9 +117,7 @@ class AddEditReceiptViewModel @Inject constructor(
             it.copy(imageUri = Uri.fromFile(File(savedPath)), imagePath = savedPath)
         }
     }
-    fun saveReceipt(
-        onSaved: () -> Unit
-    ) {
+    fun saveReceipt() {
         viewModelScope.launch {
             val currentState = _uiState.value
             val titleResult = validateTitle(currentState.title)
@@ -133,6 +139,18 @@ class AddEditReceiptViewModel @Inject constructor(
             }
             val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             val parsedDate = formatter.parse(currentState.purchaseDate)?.time ?: System.currentTimeMillis()
+            val existingItem = currentState.localId?.let {getReceiptByIdUseCase(it)}
+            val syncStatus = when {
+                !currentState.isEditMode -> {
+                    SyncStatus.CREATED
+                }
+                existingItem?.remoteId != null -> {
+                    SyncStatus.UPDATED
+                }
+                else -> {
+                    SyncStatus.CREATED
+                }
+            }
             val model = ReceiptModel(
                 localId = currentState.localId,
                 remoteId = null,
@@ -147,13 +165,7 @@ class AddEditReceiptViewModel @Inject constructor(
                     else{
                         System.currentTimeMillis()
                     },
-                syncStatus =
-                    if(currentState.isEditMode) {
-                        SyncStatus.UPDATED
-                    }
-                    else{
-                        SyncStatus.CREATED
-                    }
+                syncStatus = syncStatus
             )
             if(currentState.isEditMode) {
                 updateReceiptUseCase(model)
@@ -162,7 +174,44 @@ class AddEditReceiptViewModel @Inject constructor(
             else {
                 addReceiptUseCase(model)
             }
-            onSaved()
+            launch ( Dispatchers.IO) {
+                syncRepository.syncPendingData()
+            }
+            eventChannel.send(UiEvent.NavigateBack)
+        }
+    }
+    fun saveImageToGallery(context: Context){
+        viewModelScope.launch ( Dispatchers.IO ){
+            try {
+                val uri = _uiState.value.imageUri ?: return@launch
+                val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+                val fileName = "Receipt_${System.currentTimeMillis()}.jpg"
+                val values = ContentValues().apply {
+                    put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                    put(
+                        MediaStore.Images.Media.RELATIVE_PATH,
+                        Environment.DIRECTORY_PICTURES
+                    )
+                }
+                val savedUri = context.contentResolver.insert(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                savedUri?.let {
+                    context.contentResolver
+                        .openOutputStream(it)
+                        ?.use {output ->
+                            bitmap.compress(
+                                Bitmap.CompressFormat.JPEG,
+                                100,
+                                output
+                            )
+                        }
+                }
+                eventChannel.send(UiEvent.ShowSnackbar(R.string.document_saved))
+
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
         }
     }
 }

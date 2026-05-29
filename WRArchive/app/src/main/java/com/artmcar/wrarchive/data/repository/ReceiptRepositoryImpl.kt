@@ -32,18 +32,17 @@ class ReceiptRepositoryImpl @Inject constructor(
         item: ReceiptModel
     ) {
         dao.update(
-            item.copy(
-                syncStatus = SyncStatus.UPDATED
-            ).toEntity()
+            item.toEntity()
         )
     }
     override suspend fun deleteReceipt(
         item: ReceiptModel
     ) {
-        dao.update(
-            item.copy(
-                syncStatus = SyncStatus.DELETED
-            ).toEntity()
-        )
+        if(item.remoteId == null){
+            dao.delete(item.toEntity())
+        }
+        else{
+            dao.update(item.copy(syncStatus = SyncStatus.DELETED).toEntity())
+        }
     }
 }

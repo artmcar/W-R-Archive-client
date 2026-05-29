@@ -1,8 +1,10 @@
 package com.artmcar.wrarchive.presentation.receipt.add_edit_screen
 
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +15,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,6 +40,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -63,13 +69,16 @@ fun AddEditReceiptScreen(
                 is UiEvent.ShowSnackbar -> {
                     snackbarHostState.showSnackbar(context.getString(event.messageRes))
                 }
+                UiEvent.NavigateBack -> {
+                    onBackClick()
+                }
             }
         }
     }
     val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()
     )
     val imagePicker = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent()
+            contract = ActivityResultContracts.PickVisualMedia()
         ) { uri ->
             viewModel.updateImage(uri)
         }
@@ -96,6 +105,16 @@ fun AddEditReceiptScreen(
                         else
                             stringResource(R.string.add_receipt)
                     )
+                },
+                actions = {
+                    IconButton(
+                        onClick = { viewModel.saveReceipt() }
+                    ){
+                        Icon(
+                            imageVector = Icons.Default.Save,
+                            contentDescription = stringResource(R.string.save)
+                        )
+                    }
                 }
             )
         }
@@ -113,9 +132,7 @@ fun AddEditReceiptScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()
-                ),
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedTextField(
@@ -138,7 +155,8 @@ fun AddEditReceiptScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedTextField(
                     value = uiState.purchaseDate,
@@ -163,8 +181,16 @@ fun AddEditReceiptScreen(
             }
             Button(
                 onClick = {
-                    imagePicker.launch("image/*")
-                }
+                    imagePicker.launch(
+                        PickVisualMediaRequest(
+                            ActivityResultContracts
+                                .PickVisualMedia
+                                .ImageOnly
+                        )
+                    )
+                },
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(stringResource(R.string.pick_image))
             }
@@ -174,21 +200,13 @@ fun AddEditReceiptScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(240.dp)
+                        .weight(1f)
+                        .padding(bottom = 12.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .clickable {
+                            viewModel.saveImageToGallery(context)
+                        }
                 )
-            }
-            Spacer(
-                modifier = Modifier.weight(1f)
-            )
-            Button(
-                onClick = {
-                    viewModel.saveReceipt {
-                        onBackClick()
-                    }
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(stringResource(R.string.save))
             }
         }
     }

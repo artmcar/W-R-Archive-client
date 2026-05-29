@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.ReceiptModel
 import com.artmcar.wrarchive.presentation.warranty_and_receipt.SyncStatusChip
+import com.artmcar.wrarchive.ui.theme.ExtendedTheme
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -47,7 +50,8 @@ fun ReceiptItem(
             .clickable(
                 onClick = onClick
             ),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = ExtendedTheme.colors.customCardBackgroundColors)
     ) {
         Column(
             modifier = Modifier
@@ -57,12 +61,12 @@ fun ReceiptItem(
         ) {
             Text(
                 text = item.title,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleLarge
             )
             if(item.description.isNotBlank()) {
                 Text(
                     text = item.description,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
             Text(
@@ -72,31 +76,8 @@ fun ReceiptItem(
                         Date(item.purchaseDate)
                     )
                 ),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodyMedium
             )
-            item.imagePath?.let { imagePath ->
-                Spacer(
-                    modifier = Modifier.height(8.dp)
-                )
-                val imageModel =
-                    if(imagePath.startsWith("/uploads")) {
-                        "http://10.0.2.2:8080$imagePath"
-                    } else {
-                        File(imagePath)
-                    }
-                Image(
-                    painter = rememberAsyncImagePainter(model = imageModel),
-                    contentDescription =
-                        stringResource(
-                            R.string.receipt_image
-                        ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(180.dp)
-                        .clip(RoundedCornerShape(12.dp)),
-                    contentScale = ContentScale.Crop
-                )
-            }
             when(item.syncStatus) {
                 SyncStatus.CREATED -> {
                     SyncStatusChip(

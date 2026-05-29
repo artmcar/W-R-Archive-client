@@ -100,6 +100,6 @@ dependencies {
     implementation(libs.ktor.client.auth.jvm)
     implementation(libs.ktor.serialization.kotlinx.json)
 
-
+    implementation(libs.androidx.material.icons.extended)
 
 }

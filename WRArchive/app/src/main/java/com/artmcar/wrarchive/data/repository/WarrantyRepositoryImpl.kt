@@ -30,16 +30,17 @@ class WarrantyRepositoryImpl @Inject constructor(
     }
     override suspend fun updateWarranty(item: WarrantyModel) {
         dao.update(
-            item.copy(
-                syncStatus = SyncStatus.UPDATED
-            ).toEntity()
+            item.toEntity()
         )
     }
-    override suspend fun deleteWarranty(item: WarrantyModel) {
-        dao.update(
-            item.copy(
-                syncStatus = SyncStatus.DELETED
-            ).toEntity()
-        )
+    override suspend fun deleteWarranty(item: WarrantyModel)
+    {
+        if(item.remoteId == null) {
+            dao.delete(item.toEntity())
+        } else {
+            dao.update(
+                item.copy(syncStatus = SyncStatus.DELETED).toEntity()
+            )
+        }
     }
 }

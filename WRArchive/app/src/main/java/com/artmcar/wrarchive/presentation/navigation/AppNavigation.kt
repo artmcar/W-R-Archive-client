@@ -20,8 +20,8 @@ import com.artmcar.wrarchive.presentation.main.MainScreen
 import com.artmcar.wrarchive.presentation.profile.ProfileScreen
 
 @Composable
-fun AppNavigation() {
-    val authViewModel: AuthStateViewModel = hiltViewModel()
+fun AppNavigation(authViewModel: AuthStateViewModel = hiltViewModel())
+{
     val authState by authViewModel.state.collectAsState()
     if(authState.isLoading){
         Box(
