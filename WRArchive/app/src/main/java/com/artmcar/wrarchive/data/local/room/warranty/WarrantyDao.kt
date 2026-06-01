@@ -11,8 +11,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface WarrantyDao {
 
-    //Todo Реализовать запросы
-
     @Insert
     suspend fun insert(item: WarrantyFields)
 

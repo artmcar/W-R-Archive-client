@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -46,6 +47,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
 import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.presentation.util.UiEvent
+import com.artmcar.wrarchive.ui.theme.ExtendedTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -186,6 +188,9 @@ fun AddEditWarrantyScreen(
                         )
                     )
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = ExtendedTheme.colors.customDarkAddEditButtonColors,
+                    contentColor = ExtendedTheme.colors.customButtonTextPrimaryColors),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {

@@ -1,30 +1,31 @@
 package com.artmcar.wrarchive.ui.theme
 
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = primaryDark,
+    secondary = primaryDark,
+    primaryContainer = primaryContainerDark, //
+    onPrimaryContainer = onPrimaryContainerDark,
+    background = backgroundDark,
+    surfaceContainer = surfaceContainerDark,
+    secondaryContainer = secondaryContainerDark,
+    surface = surfaceContainerDark,
+    onSecondaryContainer = onSecondaryContainerDark,
+    onPrimary = onPrimaryDark
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = primaryLight,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
+    secondary = primaryLight,
     primaryContainer = primaryContainerLight,
     onPrimaryContainer = onPrimaryContainerLight,
     background = backgroundLight,
@@ -66,16 +67,22 @@ fun WRArchiveTheme(
 @Immutable
 data class CustomColors(
     val customButtonColors: Color,
-    val customTextColors: Color,
+    val customButtonTextPrimaryColors: Color,
+    val customButtonTextSecondaryColors: Color,
     val customErrorColors: Color,
-    val customCardBackgroundColors: Color
+    val customCardBackgroundColors: Color,
+    val customDarkAddEditButtonTextColors: Color,
+    val customDarkAddEditButtonColors: Color
 )
 val LocalCustomColors = staticCompositionLocalOf {
     CustomColors(
         customButtonColors = Color.Unspecified,
-        customTextColors = Color.Unspecified,
+        customButtonTextPrimaryColors = Color.Unspecified,
+        customButtonTextSecondaryColors = Color.Unspecified,
         customErrorColors = Color.Unspecified,
-        customCardBackgroundColors = Color.Unspecified
+        customCardBackgroundColors = Color.Unspecified,
+        customDarkAddEditButtonTextColors = Color.Unspecified,
+        customDarkAddEditButtonColors = Color.Unspecified
     )
 }
 object ExtendedTheme {

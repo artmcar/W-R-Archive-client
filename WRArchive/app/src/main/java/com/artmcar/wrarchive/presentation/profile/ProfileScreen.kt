@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.ui.theme.ExtendedTheme
-import com.artmcar.wrarchive.ui.theme.backgroundLight
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -102,7 +101,9 @@ fun ProfileScreen(
             Button(
                 onClick = onLogout,
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(contentColor = ExtendedTheme.colors.customErrorColors),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = ExtendedTheme.colors.customDarkAddEditButtonColors,
+                    contentColor = ExtendedTheme.colors.customErrorColors),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = stringResource(R.string.logout))

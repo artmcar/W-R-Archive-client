@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
-import com.artmcar.wrarchive.data.local.room.warranty.WarrantyFields
 import kotlinx.coroutines.flow.Flow
 
 @Dao
