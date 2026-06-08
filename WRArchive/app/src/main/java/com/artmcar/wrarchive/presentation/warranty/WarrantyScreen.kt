@@ -44,7 +44,8 @@ fun WarrantyScreen(
                     viewModel.onEvent(
                         WarrantyEvent.ToggleSortOrder
                     )
-                }
+                },
+                isSortedAscending = uiState.isSortedAscending
             )
         },
         floatingActionButton = {
