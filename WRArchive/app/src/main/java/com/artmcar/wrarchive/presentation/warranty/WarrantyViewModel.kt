@@ -8,6 +8,8 @@ import com.artmcar.wrarchive.domain.usecase.warranty_uc.AddWarrantyUseCase
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.DeleteWarrantyUseCase
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.GetAllWarrantiesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,6 +25,8 @@ class WarrantyViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(WarrantyUiState())
     val uiState: StateFlow<WarrantyUiState> = _uiState.asStateFlow()
+    private var searchJob: Job? = null
+    private var observeJob: Job? = null
     init {
         observeWarranties()
     }
@@ -39,25 +43,48 @@ class WarrantyViewModel @Inject constructor(
             is WarrantyEvent.DeleteWarranty -> {
                 deleteWarranty(event.item)
             }
+            is WarrantyEvent.SearchChanged -> {
+                _uiState.update {
+                    it.copy( searchQuery = event.query)
+                }
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch {
+                    delay(300)
+                    observeWarranties()
+                }
+            }
         }
     }
     private fun observeWarranties() {
-        viewModelScope.launch {
+        observeJob?.cancel()
+        observeJob = viewModelScope.launch {
             getAllWarrantiesUseCase().collectLatest { warrantiesList ->
+                val query = _uiState.value.searchQuery.trim().lowercase()
+                val filteredList =
+                    if(query.isBlank()){
+                        warrantiesList
+                    }
+                    else{
+                        warrantiesList.filter {
+                            it.title.lowercase().contains(query) ||
+                                    it.description.lowercase().contains(query)
+                        }
+                    }
                 val sortedList = if(
                     _uiState.value.isSortedAscending
                 ) {
-                    warrantiesList.sortedBy {
+                    filteredList.sortedBy {
                         it.expirationDate
                     }
                 } else {
-                    warrantiesList.sortedByDescending {
+                    filteredList.sortedByDescending {
                         it.expirationDate
                     }
                 }
                 _uiState.update {
                     it.copy(
-                        warranties = sortedList
+                        warranties = sortedList,
+                        allWarrantiesCount = warrantiesList.size
                     )
                 }
             }

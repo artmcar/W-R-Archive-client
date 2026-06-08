@@ -4,5 +4,7 @@ import com.artmcar.wrarchive.domain.model.WarrantyModel
 
 data class WarrantyUiState(
     val warranties: List<WarrantyModel> = emptyList(),
-    val isSortedAscending: Boolean = true
+    val isSortedAscending: Boolean = true,
+    val searchQuery: String = "",
+    val allWarrantiesCount: Int = 0
 )

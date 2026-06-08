@@ -45,6 +45,7 @@
     <string name="status_waiting_delete">Waiting for delete</string>
     <string name="document_saved">Saved to Gallery</string>
     <string name="warranty_expired">Warranty expired</string>
-
+    <string name="search_hint">Search</string>
+    <string name="nothing_found">Nothing found</string>
 
 </resources>
