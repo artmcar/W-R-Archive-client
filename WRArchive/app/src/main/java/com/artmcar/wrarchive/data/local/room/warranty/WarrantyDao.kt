@@ -29,7 +29,7 @@ interface WarrantyDao {
     @Delete
     suspend fun delete(item: WarrantyFields)
 
-    @Upsert
-    suspend fun upsertAll(items: List<WarrantyFields>)
+    @Query("SELECT * FROM warranties WHERE remoteId = :remoteId LIMIT 1")
+    suspend fun getByRemoteId(remoteId: Int): WarrantyFields?
 
 }

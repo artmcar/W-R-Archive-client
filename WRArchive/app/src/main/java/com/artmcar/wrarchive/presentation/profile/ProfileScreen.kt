@@ -99,7 +99,8 @@ fun ProfileScreen(
                 colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.background)
             )
             Button(
-                onClick = onLogout,
+                onClick = {
+                    viewModel.logout { onLogout } },
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = ExtendedTheme.colors.customDarkAddEditButtonColors,

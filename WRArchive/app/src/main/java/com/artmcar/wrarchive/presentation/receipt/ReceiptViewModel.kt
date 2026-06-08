@@ -3,6 +3,7 @@ package com.artmcar.wrarchive.presentation.receipt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.domain.model.ReceiptModel
+import com.artmcar.wrarchive.domain.repository.SyncRepository
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.DeleteReceiptUseCase
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.GetAllReceiptsUseCase
 import com.artmcar.wrarchive.presentation.warranty.WarrantyEvent
@@ -20,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ReceiptViewModel @Inject constructor(
     private val getAllReceiptsUseCase: GetAllReceiptsUseCase,
-    private val deleteReceiptUseCase: DeleteReceiptUseCase
+    private val deleteReceiptUseCase: DeleteReceiptUseCase,
+    private val syncRepository: SyncRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ReceiptUiState())
     val uiState: StateFlow<ReceiptUiState> = _uiState.asStateFlow()
@@ -94,6 +96,11 @@ class ReceiptViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             deleteReceiptUseCase(item)
+            try {
+                syncRepository.syncPendingData()
+                syncRepository.downloadRemoteData()
+            }
+            catch (_: Exception) { }
         }
     }
 }

@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -28,6 +27,6 @@ interface ReceiptDao {
     @Delete
     suspend fun delete(item: ReceiptFields)
 
-    @Upsert
-    suspend fun upsertAll(items: List<ReceiptFields>)
+    @Query("SELECT * FROM receipts WHERE remoteId = :remoteId LIMIT 1")
+    suspend fun getByRemoteId(remoteId: Int): ReceiptFields?
 }

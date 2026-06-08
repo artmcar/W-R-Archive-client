@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.WarrantyModel
+import com.artmcar.wrarchive.domain.repository.SyncRepository
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.AddWarrantyUseCase
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.DeleteWarrantyUseCase
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.GetAllWarrantiesUseCase
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WarrantyViewModel @Inject constructor(
     private val getAllWarrantiesUseCase: GetAllWarrantiesUseCase,
-    private val deleteWarrantyUseCase: DeleteWarrantyUseCase
+    private val deleteWarrantyUseCase: DeleteWarrantyUseCase,
+    private val syncRepository: SyncRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(WarrantyUiState())
     val uiState: StateFlow<WarrantyUiState> = _uiState.asStateFlow()
@@ -95,6 +97,11 @@ class WarrantyViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             deleteWarrantyUseCase(item)
+            try {
+                syncRepository.syncPendingData()
+                syncRepository.downloadRemoteData()
+            }
+            catch (_: Exception) { }
         }
     }
 }

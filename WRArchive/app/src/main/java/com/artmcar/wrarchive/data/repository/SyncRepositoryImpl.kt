@@ -117,8 +117,7 @@ class SyncRepositoryImpl @Inject constructor(
     private suspend fun syncReceipts(
         token: String
     ) {
-        val pending =
-            receiptDao.getPendingSyncItems()
+        val pending = receiptDao.getPendingSyncItems()
         pending.forEach { item ->
             try {
                 when(item.syncStatus) {
@@ -214,7 +213,22 @@ class SyncRepositoryImpl @Inject constructor(
     ) {
         try {
             val remoteItems = warrantyApi.getAllWarranties(token)
-            warrantyDao.upsertAll(remoteItems.map { it.toEntity() })
+            remoteItems.forEach { dto ->
+                val localItem = warrantyDao.getByRemoteId(dto.id)
+                if(localItem == null) {
+                    warrantyDao.insert(dto.toEntity())
+                } else if(localItem.syncStatus != SyncStatus.DELETED) {
+                    warrantyDao.update(
+                        localItem.copy(
+                            title = dto.title,
+                            description = dto.description,
+                            expirationDate = dto.expirationDate,
+                            imagePath = dto.imagePath,
+                            syncStatus = SyncStatus.SYNCED
+                        )
+                    )
+                }
+            }
         } catch (e: Exception) {
             Log.e(
                 "SYNC_ERROR",
@@ -227,7 +241,22 @@ class SyncRepositoryImpl @Inject constructor(
     ) {
         try {
             val remoteItems = receiptApi.getAllReceipts(token)
-            receiptDao.upsertAll(remoteItems.map { it.toEntity() })
+            remoteItems.forEach { dto ->
+                val localItem = receiptDao.getByRemoteId(dto.id)
+                if(localItem == null) {
+                    receiptDao.insert(dto.toEntity())
+                } else if(localItem.syncStatus != SyncStatus.DELETED){
+                    receiptDao.update(
+                        localItem.copy(
+                            title = dto.title,
+                            description = dto.description,
+                            purchaseDate = dto.purchaseDate,
+                            imagePath = dto.imagePath,
+                            syncStatus = SyncStatus.SYNCED
+                        )
+                    )
+                }
+            }
         } catch (e: Exception) {
             Log.e(
                 "SYNC_ERROR",

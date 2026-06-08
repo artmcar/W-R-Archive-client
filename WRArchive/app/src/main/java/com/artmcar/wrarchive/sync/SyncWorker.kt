@@ -20,17 +20,8 @@ class SyncWorker @AssistedInject constructor(
     private val syncRepository: SyncRepository
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun doWork(): Result {
-
-        Log.d(
-            "SYNC_WORKER",
-            "WORK STARTED"
-        )
         return try {
             syncRepository.syncPendingData()
-            Log.d(
-                "SYNC_WORKER",
-                "SYNC FINISHED"
-            )
             syncRepository.downloadRemoteData()
             Result.success()
         } catch (e: Exception) {

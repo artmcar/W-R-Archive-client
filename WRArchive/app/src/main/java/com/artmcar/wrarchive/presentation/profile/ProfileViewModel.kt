@@ -2,6 +2,7 @@ package com.artmcar.wrarchive.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.artmcar.wrarchive.domain.usecase.auth.LogoutUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetCloudSyncUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetDarkThemeUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetRememberLoginUseCase
@@ -23,7 +24,8 @@ class ProfileViewModel @Inject constructor(
     private val getRememberLoginUseCase: GetRememberLoginUseCase,
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
     private val setCloudSyncUseCase: SetCloudSyncUseCase,
-    private val setRememberLoginUseCase: SetRememberLoginUseCase
+    private val setRememberLoginUseCase: SetRememberLoginUseCase,
+    private val logoutUseCase: LogoutUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState = _uiState.asStateFlow()
@@ -62,6 +64,14 @@ class ProfileViewModel @Inject constructor(
     fun setRememberLogin(enabled: Boolean) {
         viewModelScope.launch {
             setRememberLoginUseCase(enabled)
+        }
+    }
+    fun logout(
+        onSuccess: () -> Unit
+    ) {
+        viewModelScope.launch {
+            logoutUseCase()
+            onSuccess()
         }
     }
 }
