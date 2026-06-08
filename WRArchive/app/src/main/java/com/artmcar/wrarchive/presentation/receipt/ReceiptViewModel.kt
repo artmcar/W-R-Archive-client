@@ -5,10 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.domain.model.ReceiptModel
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.DeleteReceiptUseCase
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.GetAllReceiptsUseCase
+import com.artmcar.wrarchive.presentation.warranty.WarrantyEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +24,8 @@ class ReceiptViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ReceiptUiState())
     val uiState: StateFlow<ReceiptUiState> = _uiState.asStateFlow()
+    private var searchJob: Job? = null
+    private var observeJob: Job? = null
     init {
         observeReceipts()
     }
@@ -36,23 +42,48 @@ class ReceiptViewModel @Inject constructor(
             is ReceiptEvent.DeleteReceipt -> {
                 deleteReceipt(event.item)
             }
+            is ReceiptEvent.SearchChanged -> {
+                _uiState.update {
+                    it.copy( searchQuery = event.query)
+                }
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch {
+                    delay(300)
+                    observeReceipts()
+                }
+            }
         }
     }
     private fun observeReceipts() {
-        viewModelScope.launch {
-            getAllReceiptsUseCase().collect {
-                val sortedList = if(_uiState.value.isSortedAscending) {
-                    it.sortedBy { item ->
-                        item.purchaseDate
+        observeJob?.cancel()
+        observeJob = viewModelScope.launch {
+            getAllReceiptsUseCase().collectLatest { receiptsList ->
+                val query = _uiState.value.searchQuery.trim().lowercase()
+                val filteredList =
+                    if(query.isBlank()){
+                        receiptsList
+                    }
+                    else{
+                        receiptsList.filter {
+                            it.title.lowercase().contains(query) ||
+                                    it.description.lowercase().contains(query)
+                        }
+                    }
+                val sortedList = if(
+                    _uiState.value.isSortedAscending
+                ) {
+                    filteredList.sortedBy {
+                        it.purchaseDate
                     }
                 } else {
-                    it.sortedByDescending { item ->
-                        item.purchaseDate
+                    filteredList.sortedByDescending {
+                        it.purchaseDate
                     }
                 }
-                _uiState.update { state ->
-                    state.copy(
-                        receipts = sortedList
+                _uiState.update {
+                    it.copy(
+                        receipts = sortedList,
+                        allReceiptsCount = receiptsList.size
                     )
                 }
             }
