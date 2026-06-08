@@ -21,7 +21,7 @@ class WarrantyApi(
         dto: WarrantyRequestDto
     ): WarrantyResponseDto {
         return client.post(
-            "http://10.0.2.2:8080/warranties"
+            "${ApiConfig.BASE_URL}/warranties"
         ) {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
@@ -34,7 +34,7 @@ class WarrantyApi(
         dto: WarrantyRequestDto
     ) {
         client.put(
-            "http://10.0.2.2:8080/warranties/$id"
+            "${ApiConfig.BASE_URL}/warranties/$id"
         ) {
             contentType(ContentType.Application.Json)
             bearerAuth(token)
@@ -46,7 +46,7 @@ class WarrantyApi(
         id: Int
     ) {
         client.delete(
-            "http://10.0.2.2:8080/warranties/$id"
+            "${ApiConfig.BASE_URL}/warranties/$id"
         ) {
             bearerAuth(token)
         }
@@ -54,7 +54,7 @@ class WarrantyApi(
     suspend fun getAllWarranties(token: String): List<WarrantyResponseDto>
     {
         return client.get(
-            "http://10.0.2.2:8080/warranties"
+            "${ApiConfig.BASE_URL}/warranties"
         ) { bearerAuth(token) }.body()
     }
 }

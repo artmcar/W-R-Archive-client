@@ -13,6 +13,7 @@ import androidx.navigation.toRoute
 import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.data.local.ImageStorageManager
 import com.artmcar.wrarchive.data.local.room.SyncStatus
+import com.artmcar.wrarchive.data.remote.api.ApiConfig
 import com.artmcar.wrarchive.domain.model.ReceiptModel
 import com.artmcar.wrarchive.domain.repository.SyncRepository
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.AddReceiptUseCase
@@ -81,7 +82,7 @@ class AddEditReceiptViewModel @Inject constructor(
                         imageUri =
                             it.imagePath?.let { path ->
                                 if(path.startsWith("/uploads")) {
-                                    Uri.parse("http://10.0.2.2:8080$path")
+                                    Uri.parse("${ApiConfig.BASE_URL}$path")
                                 } else {
                                     Uri.fromFile(File(path))
                                 }

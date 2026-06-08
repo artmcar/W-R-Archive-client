@@ -21,7 +21,7 @@ class ReceiptApi(
         dto: ReceiptRequestDto
     ): ReceiptResponseDto {
         return client.post(
-            "http://10.0.2.2:8080/receipts"
+            "${ApiConfig.BASE_URL}/receipts"
         ) {
             contentType(
                 ContentType.Application.Json
@@ -37,7 +37,7 @@ class ReceiptApi(
 
     ) {
         client.put(
-            "http://10.0.2.2:8080/receipts/$id"
+            "${ApiConfig.BASE_URL}/receipts/$id"
         ) {
             contentType(
                 ContentType.Application.Json
@@ -52,7 +52,7 @@ class ReceiptApi(
 
     ) {
         client.delete(
-            "http://10.0.2.2:8080/receipts/$id"
+            "${ApiConfig.BASE_URL}/receipts/$id"
         ) {
             bearerAuth(token)
         }
@@ -60,7 +60,7 @@ class ReceiptApi(
     suspend fun getAllReceipts(token: String): List<ReceiptResponseDto>
     {
         return client.get(
-            "http://10.0.2.2:8080/receipts"
+            "${ApiConfig.BASE_URL}/receipts"
         ) { bearerAuth(token) }.body()
     }
 }

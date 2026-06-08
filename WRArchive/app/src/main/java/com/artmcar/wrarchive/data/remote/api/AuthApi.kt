@@ -18,7 +18,7 @@ class AuthApi(
         password: String
     ): AuthResponseDto {
         return client.post(
-            "http://10.0.2.2:8080/auth/login"
+            "${ApiConfig.BASE_URL}/auth/login"
         ) {
             contentType(
                 ContentType.Application.Json
@@ -36,7 +36,7 @@ class AuthApi(
         password: String
     ): AuthResponseDto {
         return client.post(
-            "http://10.0.2.2:8080/auth/register"
+            "${ApiConfig.BASE_URL}/auth/register"
         ) {
             contentType(
                 ContentType.Application.Json

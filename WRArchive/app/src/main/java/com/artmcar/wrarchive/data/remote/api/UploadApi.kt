@@ -20,8 +20,7 @@ class UploadApi(
         val file = File(filePath)
         val response =
             client.submitFormWithBinaryData(
-                url =
-                    "http://10.0.2.2:8080/upload",
+                url = "${ApiConfig.BASE_URL}/upload",
                 formData = formData {
                     append(
                         key = "file",
