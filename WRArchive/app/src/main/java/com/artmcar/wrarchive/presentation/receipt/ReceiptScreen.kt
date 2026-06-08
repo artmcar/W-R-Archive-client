@@ -43,7 +43,8 @@ fun ReceiptScreen(
                     viewModel.onEvent(
                         ReceiptEvent.ToggleSortOrder
                     )
-                }
+                },
+                isSortedAscending = uiState.isSortedAscending
             )
         },
         floatingActionButton = {
