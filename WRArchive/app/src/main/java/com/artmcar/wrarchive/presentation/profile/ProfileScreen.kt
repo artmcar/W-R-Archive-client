@@ -79,16 +79,6 @@ fun ProfileScreen(
                 colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.background)
             )
             ListItem(
-                headlineContent = { Text(text = stringResource(R.string.cloud_sync)) },
-                trailingContent = {
-                    Switch(
-                        checked = uiState.cloudSync,
-                        onCheckedChange = { viewModel.setCloudSync(it) }
-                    )
-                },
-                colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.background)
-            )
-            ListItem(
                 headlineContent = { Text(text = stringResource(R.string.remember_login)) },
                 trailingContent = {
                     Switch(

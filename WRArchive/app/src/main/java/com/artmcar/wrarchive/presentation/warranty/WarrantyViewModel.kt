@@ -2,10 +2,8 @@ package com.artmcar.wrarchive.presentation.warranty
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.WarrantyModel
 import com.artmcar.wrarchive.domain.repository.SyncRepository
-import com.artmcar.wrarchive.domain.usecase.warranty_uc.AddWarrantyUseCase
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.DeleteWarrantyUseCase
 import com.artmcar.wrarchive.domain.usecase.warranty_uc.GetAllWarrantiesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

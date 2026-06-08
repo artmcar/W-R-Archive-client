@@ -2,7 +2,8 @@ package com.artmcar.wrarchive.presentation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ReceiptLong
+import androidx.compose.material.icons.filled.Verified
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.presentation.navigation.ReceiptRoute
@@ -15,14 +16,12 @@ sealed class BottomNavItem(
 ) {
     data object Warranty : BottomNavItem(
         labelRes = R.string.warranty_label,
-        //Todo Подобрать иконку
-        icon = Icons.Default.Home,
+        icon = Icons.Default.Verified,
         route = WarrantyRoute
     )
     data object Receipt : BottomNavItem(
         labelRes = R.string.receipt_label,
-        //Todo Подобрать иконку
-        icon = Icons.Default.Menu,
+        icon = Icons.Default.ReceiptLong,
         route = ReceiptRoute
     )
 }

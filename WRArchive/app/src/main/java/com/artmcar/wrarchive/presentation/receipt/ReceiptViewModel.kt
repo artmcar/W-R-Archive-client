@@ -6,7 +6,6 @@ import com.artmcar.wrarchive.domain.model.ReceiptModel
 import com.artmcar.wrarchive.domain.repository.SyncRepository
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.DeleteReceiptUseCase
 import com.artmcar.wrarchive.domain.usecase.receipt_uc.GetAllReceiptsUseCase
-import com.artmcar.wrarchive.presentation.warranty.WarrantyEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

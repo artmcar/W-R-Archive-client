@@ -1,12 +1,10 @@
 package com.artmcar.wrarchive.presentation.warranty
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,16 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import coil3.compose.rememberAsyncImagePainter
 import com.artmcar.wrarchive.R
 import com.artmcar.wrarchive.data.local.room.SyncStatus
 import com.artmcar.wrarchive.domain.model.WarrantyModel
 import com.artmcar.wrarchive.presentation.warranty_and_receipt.SyncStatusChip
 import com.artmcar.wrarchive.ui.theme.ExtendedTheme
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -98,7 +93,6 @@ fun WarrantyItem(
                     .fillMaxWidth()
                     .height(28.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    //TODO поменять surfaceVariant цвет фона карточки
                     .background(Color.White)
             ){
                 Box(
@@ -119,7 +113,6 @@ fun WarrantyItem(
                     style = MaterialTheme.typography.bodyMedium,
                     color =
                         if(remainingDays <= 0) {
-                            //TODO Поменять цвета
                             Color.Red
                         } else {
                             Color.Black

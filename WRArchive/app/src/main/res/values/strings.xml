@@ -20,7 +20,6 @@
     <string name="save">Save</string>
     <string name="profile">Profile</string>
     <string name="dark_theme">Dark Theme</string>
-    <string name="cloud_sync">Cloud Sync</string>
     <string name="remember_login">Remember Login</string>
     <string name="logout">Logout</string>
     <string name="receipts">Receipts</string>
@@ -29,7 +28,7 @@
     <string name="no_receipts_yet">No receipts yet</string>
     <string name="expiration_date_label">Expiration Date</string>
     <string name="purchase_date_label">Purchase Date</string>
-    <string name="dd_mm_yyyy">dd.MM.yyyy</string>
+    <string name="dd_mm_yyyy" translatable="false">dd.MM.yyyy</string>
     <string name="back">Back</string>
     <string name="title_empty">Title cannot be empty</string>
     <string name="title_short">Title is too short</string>

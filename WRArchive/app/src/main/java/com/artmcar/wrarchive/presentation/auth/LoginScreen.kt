@@ -67,7 +67,6 @@ fun LoginScreen(
             }
             return@Scaffold
         }
-
         Column (modifier = Modifier
             .fillMaxSize()
             .padding(padding),
@@ -93,12 +92,11 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(24.dp),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Top
             ){
                 Row (
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 )
                 {

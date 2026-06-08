@@ -3,10 +3,8 @@ package com.artmcar.wrarchive.presentation.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artmcar.wrarchive.domain.usecase.auth.LogoutUseCase
-import com.artmcar.wrarchive.domain.usecase.settings_uc.GetCloudSyncUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetDarkThemeUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.GetRememberLoginUseCase
-import com.artmcar.wrarchive.domain.usecase.settings_uc.SetCloudSyncUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.SetDarkThemeUseCase
 import com.artmcar.wrarchive.domain.usecase.settings_uc.SetRememberLoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,10 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getDarkThemeUseCase: GetDarkThemeUseCase,
-    private val getCloudSyncUseCase: GetCloudSyncUseCase,
     private val getRememberLoginUseCase: GetRememberLoginUseCase,
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
-    private val setCloudSyncUseCase: SetCloudSyncUseCase,
     private val setRememberLoginUseCase: SetRememberLoginUseCase,
     private val logoutUseCase: LogoutUseCase,
 ) : ViewModel() {
@@ -36,12 +32,10 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             combine(
                 getDarkThemeUseCase(),
-                getCloudSyncUseCase(),
                 getRememberLoginUseCase()
-            ) { dark, cloud, remember ->
+            ) { dark, remember ->
                 ProfileUiState(
                     darkTheme = dark,
-                    cloudSync = cloud,
                     rememberLogin = remember
                 )
             }.collect { state ->
@@ -54,11 +48,6 @@ class ProfileViewModel @Inject constructor(
     fun setDarkTheme(enabled: Boolean) {
         viewModelScope.launch {
             setDarkThemeUseCase(enabled)
-        }
-    }
-    fun setCloudSync(enabled: Boolean) {
-        viewModelScope.launch {
-            setCloudSyncUseCase(enabled)
         }
     }
     fun setRememberLogin(enabled: Boolean) {
